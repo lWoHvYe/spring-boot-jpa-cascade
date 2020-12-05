@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.lwohvye</groupId>
     <artifactId>spring-boot-jpa-cascade</artifactId>
-    <version>0.6</version>
+    <version>1.0</version>
     <name>spring-boot-jpa-cascade</name>
     <description>Spring-boot-jpa级联操作</description>
 
