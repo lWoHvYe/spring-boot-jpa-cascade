@@ -4,13 +4,14 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 
 /**
-* @author why
-* @date 2020-06-23
-*/
+ * @author why
+ * @date 2020-06-23
+ */
 @Data
 public class BossServiceDTO implements Serializable {
 
@@ -35,5 +36,6 @@ public class BossServiceDTO implements Serializable {
     // 更新时间
     private Timestamp updateTime;
 
-    private Set<BossProductServiceDTO> bossProductServiceEntities;
+    //    private Set<BossProductServiceDTO> bossProductServiceEntities;
+    private List<BossProductSmallDTO> bossProducts;
 }

@@ -125,9 +125,9 @@ public class BossProductEntity implements Serializable {
     private List<BossServiceEntity> bossServices;
 
     // TODO: 2020/12/2 需要级联查询与更新。使用下面这种方式
-    @JoinColumn(name = "product_id")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<BossProductServiceEntity> bossProductServiceEntities = new HashSet<>();
+//    @JoinColumn(name = "product_id")
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private Set<BossProductServiceEntity> bossProductServiceEntities = new HashSet<>();
 
     public void copy(BossProductEntity source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));

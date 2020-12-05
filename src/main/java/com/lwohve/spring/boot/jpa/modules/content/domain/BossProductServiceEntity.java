@@ -31,14 +31,20 @@ public class BossProductServiceEntity implements Serializable {
     private Long id;
 
     // 产品ID
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private BossProductEntity bossProductEntity;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "product_id")
+//    private BossProductEntity bossProductEntity;
+
+    @Column(name = "product_id")
+    private Long productId;
 
     // 服务ID
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id")
-    private BossServiceEntity bossServiceEntity;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "service_id")
+//    private BossServiceEntity bossServiceEntity;
+
+    @Column(name = "service_id")
+    private Long serviceId;
 
     // 状态：0-下线，1-上线
     @Column(name = "status")

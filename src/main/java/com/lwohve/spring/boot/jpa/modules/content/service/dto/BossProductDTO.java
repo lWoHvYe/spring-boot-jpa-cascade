@@ -1,9 +1,11 @@
 package com.lwohve.spring.boot.jpa.modules.content.service.dto;
 
+import com.lwohve.spring.boot.jpa.modules.content.domain.BossServiceEntity;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 
@@ -76,5 +78,6 @@ public class BossProductDTO implements Serializable {
 
     private String outProductId;
 
-    private Set<BossProductServiceDTO> bossProductServiceEntities;
+//    private Set<BossProductServiceDTO> bossProductServiceEntities;
+    private List<BossServiceSmallDTO> bossServices;
 }

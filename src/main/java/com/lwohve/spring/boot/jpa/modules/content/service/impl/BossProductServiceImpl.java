@@ -137,27 +137,27 @@ public class BossProductServiceImpl implements BossProductService {
 
     @Override
     public void download(List<BossProductDTO> all, HttpServletResponse response) throws IOException {
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (BossProductDTO bossProduct : all) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("CODE", bossProduct.getCode());
-            map.put("名称", bossProduct.getName());
-            map.put("类型，1-基础包产品 2-增值包产品 3-套餐产品", bossProduct.getType());
-            map.put("价格，单位：分", bossProduct.getPrice());
-            map.put("原始价格", bossProduct.getOriginalPrice());
-            map.put("积分", bossProduct.getPoints());
-            map.put("原始积分", bossProduct.getOriginalPoints());
-            map.put("计费类型：0-FREE（免费），1-PPV（一次性收费），2-SVOD（周期性收费）", bossProduct.getFeeType());
-            map.put("开始时间", bossProduct.getStartTime());
-            map.put("过期时间", bossProduct.getExpireTime());
-            map.put("状态：0-下线，1-上线", bossProduct.getStatus());
-            map.put("图片", bossProduct.getImg());
-            map.put("描述", bossProduct.getDesc());
-            map.put("创建时间", bossProduct.getCreateTime());
-            map.put("更新时间", bossProduct.getUpdateTime());
-            map.put("outProductId", bossProduct.getOutProductId());
-            list.add(map);
-        }
-        FileUtil.downloadExcel(list, response);
+//        List<Map<String, Object>> list = new ArrayList<>();
+//        for (BossProductDTO bossProduct : all) {
+//            Map<String, Object> map = new LinkedHashMap<>();
+//            map.put("CODE", bossProduct.getCode());
+//            map.put("名称", bossProduct.getName());
+//            map.put("类型，1-基础包产品 2-增值包产品 3-套餐产品", bossProduct.getType());
+//            map.put("价格，单位：分", bossProduct.getPrice());
+//            map.put("原始价格", bossProduct.getOriginalPrice());
+//            map.put("积分", bossProduct.getPoints());
+//            map.put("原始积分", bossProduct.getOriginalPoints());
+//            map.put("计费类型：0-FREE（免费），1-PPV（一次性收费），2-SVOD（周期性收费）", bossProduct.getFeeType());
+//            map.put("开始时间", bossProduct.getStartTime());
+//            map.put("过期时间", bossProduct.getExpireTime());
+//            map.put("状态：0-下线，1-上线", bossProduct.getStatus());
+//            map.put("图片", bossProduct.getImg());
+//            map.put("描述", bossProduct.getDesc());
+//            map.put("创建时间", bossProduct.getCreateTime());
+//            map.put("更新时间", bossProduct.getUpdateTime());
+//            map.put("outProductId", bossProduct.getOutProductId());
+//            list.add(map);
+//        }
+//        FileUtil.downloadExcel(list, response);
     }
 }

@@ -131,17 +131,17 @@ public class BossServiceServiceImpl implements BossServiceService {
 
     @Override
     public void download(List<BossServiceDTO> all, HttpServletResponse response) throws IOException {
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (BossServiceDTO bossService : all) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("CODE", bossService.getCode());
-            map.put("名称", bossService.getName());
-            map.put("状态：0-下线，1-上线", bossService.getStatus());
-            map.put("描述", bossService.getDesc());
-            map.put("创建时间", bossService.getCreateTime());
-            map.put("更新时间", bossService.getUpdateTime());
-            list.add(map);
-        }
-        FileUtil.downloadExcel(list, response);
+//        List<Map<String, Object>> list = new ArrayList<>();
+//        for (BossServiceDTO bossService : all) {
+//            Map<String, Object> map = new LinkedHashMap<>();
+//            map.put("CODE", bossService.getCode());
+//            map.put("名称", bossService.getName());
+//            map.put("状态：0-下线，1-上线", bossService.getStatus());
+//            map.put("描述", bossService.getDesc());
+//            map.put("创建时间", bossService.getCreateTime());
+//            map.put("更新时间", bossService.getUpdateTime());
+//            list.add(map);
+//        }
+//        FileUtil.downloadExcel(list, response);
     }
 }

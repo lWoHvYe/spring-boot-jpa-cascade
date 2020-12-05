@@ -82,17 +82,17 @@ public class BossProductServiceServiceImpl implements BossProductServiceService 
 
     @Override
     public void download(List<BossProductServiceDTO> all, HttpServletResponse response) throws IOException {
-        List<Map<String, Object>> list = new ArrayList<>();
-        for (BossProductServiceDTO bossProductService : all) {
-            Map<String,Object> map = new LinkedHashMap<>();
-            map.put("产品ID", bossProductService.getBossProductEntity().getName());
-            map.put("服务ID", bossProductService.getBossServiceEntity().getName());
-            map.put("状态：0-下线，1-上线", bossProductService.getStatus());
-            map.put("描述", bossProductService.getDesc());
-            map.put("创建时间", bossProductService.getCreateTime());
-            map.put("更新时间", bossProductService.getUpdateTime());
-            list.add(map);
-        }
-        FileUtil.downloadExcel(list, response);
+//        List<Map<String, Object>> list = new ArrayList<>();
+//        for (BossProductServiceDTO bossProductService : all) {
+//            Map<String,Object> map = new LinkedHashMap<>();
+//            map.put("产品ID", bossProductService.getBossProductEntity().getName());
+//            map.put("服务ID", bossProductService.getBossServiceEntity().getName());
+//            map.put("状态：0-下线，1-上线", bossProductService.getStatus());
+//            map.put("描述", bossProductService.getDesc());
+//            map.put("创建时间", bossProductService.getCreateTime());
+//            map.put("更新时间", bossProductService.getUpdateTime());
+//            list.add(map);
+//        }
+//        FileUtil.downloadExcel(list, response);
     }
 }

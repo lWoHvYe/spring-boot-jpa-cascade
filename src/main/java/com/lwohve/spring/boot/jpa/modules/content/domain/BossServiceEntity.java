@@ -70,9 +70,9 @@ public class BossServiceEntity implements Serializable {
     private List<BossProductEntity> bossProducts;
 
     // TODO: 2020/12/2 需要级联查询与更新。使用下面这种方式
-    @JoinColumn(name = "service_id")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<BossProductServiceEntity> bossProductServiceEntities = new HashSet<>();
+//    @JoinColumn(name = "service_id")
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private Set<BossProductServiceEntity> bossProductServiceEntities = new HashSet<>();
 
     public void copy(BossServiceEntity source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
