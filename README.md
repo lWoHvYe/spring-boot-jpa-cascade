@@ -4,6 +4,7 @@ Jpa 实际关系注解测试
 @ManyToMany注解版。当前还未对更新及保存做测试。后续进行
 该注解适合单方维护多对多关系的情况。在维护方使用@JoinTable注解。
 在被维护方使用@ManyToMany(mappedBy = "多方关联属性名")
+若两方都配置@JoinTable，就会出问题。当更新product时，会先移除所有关联关系。然后错误触发移除关联service相关的所有关联关系，之后只添加该product与这些service的关联关系，其他product与这些service的关系却被错误移除掉了。一定不要这么配置。
 
 内容调整很简单，只需要传要关联那些内容即可
 ```json5
