@@ -71,7 +71,20 @@ public class BossServiceEntity implements Serializable {
     // TODO: 2020/12/2 需要级联查询与更新。使用下面这种方式
     @JoinColumn(name = "service_id")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<BossProductServiceEntity> bossProductServiceEntities = new HashSet<>();
+    private Set<BossProductServiceEntity> bossProductServiceEntities;
+
+    //    需要重写set方法
+//    针对的报错 A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance
+    public void setBossProductServiceEntities(Set<BossProductServiceEntity> bossProductServiceEntities) {
+        if (this.bossProductServiceEntities == null) {
+            this.bossProductServiceEntities = bossProductServiceEntities;
+        } else if (this.bossProductServiceEntities != bossProductServiceEntities) {// not the same instance, in other case we can get ConcurrentModificationException from hibernate AbstractPersistentCollection
+            this.bossProductServiceEntities.clear();
+            if (bossProductServiceEntities != null) {
+                this.bossProductServiceEntities.addAll(bossProductServiceEntities);
+            }
+        }
+    }
 
     public void copy(BossServiceEntity source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));

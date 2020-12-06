@@ -1,11 +1,11 @@
-package com.lwohve.modules.content.service.impl;
+package com.lwohvye.modules.content.service.impl;
 
-import com.lwohve.modules.content.service.BossProductServiceService;
-import com.lwohve.modules.content.service.mapper.BossProductServiceMapper;
-import com.lwohve.modules.content.domain.BossProductServiceEntity;
-import com.lwohve.modules.content.repository.BossProductServiceRepository;
-import com.lwohve.modules.content.service.dto.BossProductServiceDTO;
-import com.lwohve.modules.content.service.dto.BossProductServiceQueryCriteria;
+import com.lwohvye.modules.content.domain.BossProductServiceEntity;
+import com.lwohvye.modules.content.repository.BossProductServiceRepository;
+import com.lwohvye.modules.content.service.BossProductServiceService;
+import com.lwohvye.modules.content.service.dto.BossProductServiceDTO;
+import com.lwohvye.modules.content.service.dto.BossProductServiceQueryCriteria;
+import com.lwohvye.modules.content.service.mapper.BossProductServiceMapper;
 import com.lwohvye.utils.FileUtil;
 import com.lwohvye.utils.PageUtil;
 import com.lwohvye.utils.QueryHelp;
