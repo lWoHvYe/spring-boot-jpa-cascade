@@ -6,10 +6,10 @@ import com.lwohve.spring.boot.jpa.modules.content.service.dto.BossProductService
 import com.lwohve.spring.boot.jpa.modules.content.service.mapper.BossProductServiceMapper;
 import com.lwohve.spring.boot.jpa.modules.content.service.BossProductServiceService;
 import com.lwohve.spring.boot.jpa.modules.content.service.dto.BossProductServiceQueryCriteria;
-import me.zhengjie.utils.FileUtil;
-import me.zhengjie.utils.PageUtil;
-import me.zhengjie.utils.QueryHelp;
-import me.zhengjie.utils.ValidationUtil;
+import com.lwohvye.utils.FileUtil;
+import com.lwohvye.utils.PageUtil;
+import com.lwohvye.utils.QueryHelp;
+import com.lwohvye.utils.ValidationUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

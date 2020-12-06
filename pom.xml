@@ -28,7 +28,7 @@
     <dependencies>
         <!--system模块-->
         <dependency>
-            <groupId>me.zhengjie</groupId>
+            <groupId>com.lwohvye</groupId>
             <artifactId>eladmin-system</artifactId>
             <version>2.6</version>
         </dependency>

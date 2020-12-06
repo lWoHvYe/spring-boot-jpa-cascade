@@ -3,7 +3,7 @@ package com.lwohve.spring.boot.jpa.modules.content.rest;
 import com.lwohve.spring.boot.jpa.modules.content.domain.BossProductServiceEntity;
 import com.lwohve.spring.boot.jpa.modules.content.service.BossProductServiceService;
 import com.lwohve.spring.boot.jpa.modules.content.service.dto.BossProductServiceQueryCriteria;
-import me.zhengjie.annotation.Log;
+import com.lwohvye.annotation.Log;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

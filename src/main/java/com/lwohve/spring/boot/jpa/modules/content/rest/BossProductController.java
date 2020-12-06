@@ -3,7 +3,8 @@ package com.lwohve.spring.boot.jpa.modules.content.rest;
 import com.lwohve.spring.boot.jpa.modules.content.domain.BossProductEntity;
 import com.lwohve.spring.boot.jpa.modules.content.service.BossProductService;
 import com.lwohve.spring.boot.jpa.modules.content.service.dto.BossProductQueryCriteria;
-import me.zhengjie.annotation.Log;
+import com.lwohvye.annotation.AnonymousAccess;
+import com.lwohvye.annotation.Log;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,6 @@ public class BossProductController {
     @Log("导出数据")
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
-    @PreAuthorize("@el.check('bossProduct:list')")
     public void download(HttpServletResponse response, BossProductQueryCriteria criteria) throws IOException {
         bossProductService.download(bossProductService.queryAll(criteria), response);
     }
@@ -40,7 +40,7 @@ public class BossProductController {
     @GetMapping
     @Log("查询BossProduct")
     @ApiOperation("查询BossProduct")
-    @PreAuthorize("@el.check('bossProduct:list')")
+    @AnonymousAccess
     public ResponseEntity getBossProducts(BossProductQueryCriteria criteria, Pageable pageable){
         return new ResponseEntity<>(bossProductService.queryAll(criteria,pageable),HttpStatus.OK);
     }
@@ -48,7 +48,7 @@ public class BossProductController {
     @PostMapping
     @Log("新增BossProduct")
     @ApiOperation("新增BossProduct")
-    @PreAuthorize("@el.check('bossProduct:add')")
+    @AnonymousAccess
     public ResponseEntity create(@Validated @RequestBody BossProductEntity resources){
         return new ResponseEntity<>(bossProductService.create(resources),HttpStatus.CREATED);
     }
@@ -56,7 +56,7 @@ public class BossProductController {
     @PutMapping
     @Log("修改BossProduct")
     @ApiOperation("修改BossProduct")
-    @PreAuthorize("@el.check('bossProduct:edit')")
+    @AnonymousAccess
     public ResponseEntity update(@Validated @RequestBody BossProductEntity resources){
         bossProductService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -64,7 +64,7 @@ public class BossProductController {
 
     @DeleteMapping(value = "/{id}")
     @Log("删除BossProduct")
-    @ApiOperation("删除BossProduct")
+    @AnonymousAccess
     @PreAuthorize("@el.check('bossProduct:del')")
     public ResponseEntity delete(@PathVariable Long id){
         bossProductService.delete(id);

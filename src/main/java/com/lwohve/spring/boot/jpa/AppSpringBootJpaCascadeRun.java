@@ -1,6 +1,6 @@
 package com.lwohve.spring.boot.jpa;
 
-import me.zhengjie.utils.SpringContextHolder;
+import com.lwohvye.utils.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;

@@ -2,7 +2,7 @@ package com.lwohve.spring.boot.jpa.modules.content.service.mapper;
 
 import com.lwohve.spring.boot.jpa.modules.content.domain.BossProductEntity;
 import com.lwohve.spring.boot.jpa.modules.content.service.dto.BossProductSmallDTO;
-import me.zhengjie.base.BaseMapper;
+import com.lwohvye.base.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

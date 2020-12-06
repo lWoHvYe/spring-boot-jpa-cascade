@@ -1,7 +1,7 @@
 package com.lwohve.spring.boot.jpa.modules.content.service.dto;
 
+import com.lwohvye.annotation.Query;
 import lombok.Data;
-import me.zhengjie.annotation.Query;
 
 /**
 * @author why
