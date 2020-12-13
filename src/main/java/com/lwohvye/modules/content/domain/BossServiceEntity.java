@@ -61,7 +61,7 @@ public class BossServiceEntity implements Serializable {
     @Column(name = "update_time")
     private Timestamp updateTime;
 
-    // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题。但无法级联保存。存疑。
+    // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题。但只适用于单方维护关系的场景。
 //    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinTable(name = "boss_product__service",
 //            joinColumns = {@JoinColumn(name = "service_id", referencedColumnName = "id")},

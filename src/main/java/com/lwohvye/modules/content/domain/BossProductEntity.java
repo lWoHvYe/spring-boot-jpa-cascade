@@ -116,7 +116,7 @@ public class BossProductEntity implements Serializable {
     @Column(name = "out_product_id")
     private String outProductId;
 
-    // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题。但无法级联保存，待进一步验证。因为其他系统里有这样实现级联更新
+    // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题。但只适用单方维护关系的场景。且不能都用@JoinTable，被维护方使用@ManyToMany(mappedBy = "多方关联属性名")
 //    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinTable(name = "boss_product__service",
 //            joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
