@@ -21,7 +21,7 @@ import java.util.UUID;
  * @date 2020-06-23
  */
 @Entity
-// TODO: 2020/12/2 造成循环依赖的罪魁祸首竟然是toString方法，只使用getter和setter就没问题了
+// TODO: 2020/12/2 造成循环依赖的罪魁祸首竟然是hashCode方法，只使用getter和setter就没问题了
 @Getter
 @Setter
 @ToString
