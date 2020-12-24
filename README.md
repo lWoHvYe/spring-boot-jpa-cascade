@@ -4,110 +4,59 @@ Jpa 实际关系注解测试
 
 @ManyToOne  @OneToMany注解版本
 
-保存json示例
+新增时，可携带关联关系。关联关系中不包含产品相关属性。
+保存时，会先add产品id为null的关联记录。再执行update
+新增商品示例
+```json5
+
+{
+  "name": "包月",
+  "type": 2,
+  "bossProductServiceEntities": [
+    {
+      "bossServiceEntity": {
+        "id": 3
+      },
+      "status": 0
+    },
+    {
+      "bossServiceEntity": {
+        "id": 4
+      },
+      "status": 0
+    }
+  ]
+}
+```
+
+保存json示例（与下面调整类似）
 直接修改bossProductServiceEntities中值，
 执行update后生效
 ```json5
 {
 	"id": 1,
-	"code": "Fee_Month_TEST_AS",
 	"name": "包月",
 	"type": 2,
-	"price": null,
-	"originalPrice": null,
-	"points": null,
-	"originalPoints": null,
-	"feeType": 1,
-	"feeUnit": 3,
-	"feeDuration": null,
-	"feeEffective": null,
-	"feeInvalid": null,
-	"startTime": null,
-	"expireTime": null,
-	"status": 1,
-	"img": "[]",
-	"desc": "测试包月",
-	"createTime": 1591930079000,
-	"updateTime": 1592998706000,
-	"outProductId": null,
 	"bossProductServiceEntities": [
 		{
 			"id": 10,
 			"bossProductEntity": {
-				"id": 1,
-				"code": "Fee_Month_TEST_AS",
-				"name": "包月",
-				"type": 2,
-				"price": null,
-				"originalPrice": null,
-				"points": null,
-				"originalPoints": null,
-				"feeType": 1,
-				"feeUnit": 3,
-				"feeDuration": null,
-				"feeEffective": null,
-				"feeInvalid": null,
-				"startTime": null,
-				"expireTime": null,
-				"status": 1,
-				"img": "[]",
-				"desc": "测试包月",
-				"createTime": 1591930079000,
-				"updateTime": 1592998706000,
-				"outProductId": null
+				"id": 1
 			},
 			"bossServiceEntity": {
-				"id": 3,
-				"code": "666100001",
-				"name": "VIP影视增值包",
-				"status": 1,
-				"desc": null,
-				"createTime": 1592560854000,
-				"updateTime": null
+				"id": 3
 			},
-			"status": 0,
-			"desc": null,
-			"createTime": null,
-			"updateTime": null
+			"status": 0
 		},
 		{
 			"id": 9,
 			"bossProductEntity": {
-				"id": 1,
-				"code": "Fee_Month_TEST_AS",
-				"name": "包月",
-				"type": 2,
-				"price": null,
-				"originalPrice": null,
-				"points": null,
-				"originalPoints": null,
-				"feeType": 1,
-				"feeUnit": 3,
-				"feeDuration": null,
-				"feeEffective": null,
-				"feeInvalid": null,
-				"startTime": null,
-				"expireTime": null,
-				"status": 1,
-				"img": "[]",
-				"desc": "测试包月",
-				"createTime": 1591930079000,
-				"updateTime": 1592998706000,
-				"outProductId": null
+				"id": 1
 			},
 			"bossServiceEntity": {
-				"id": 4,
-				"code": "666100002",
-				"name": "XX乐园增值包",
-				"status": 1,
-				"desc": null,
-				"createTime": 1592560850000,
-				"updateTime": null
+				"id": 4
 			},
-			"status": 0,
-			"desc": null,
-			"createTime": null,
-			"updateTime": 1593018577000
+			"status": 0
 		}
 	]
 }
@@ -118,103 +67,27 @@ Jpa 实际关系注解测试
 ```json5
 {
 	"id": 1,
-	"code": "Fee_Month_TEST_AS",
 	"name": "包月",
 	"type": 2,
-	"price": null,
-	"originalPrice": null,
-	"points": null,
-	"originalPoints": null,
-	"feeType": 1,
-	"feeUnit": 3,
-	"feeDuration": null,
-	"feeEffective": null,
-	"feeInvalid": null,
-	"startTime": null,
-	"expireTime": null,
-	"status": 1,
-	"img": "[]",
-	"desc": "测试包月",
-	"createTime": 1591930079000,
-	"updateTime": 1592998706000,
-	"outProductId": null,
 	"bossProductServiceEntities": [
 		{
 			"id": 9,
 			"bossProductEntity": {
-				"id": 1,
-				"code": "Fee_Month_TEST_AS",
-				"name": "包月",
-				"type": 2,
-				"price": null,
-				"originalPrice": null,
-				"points": null,
-				"originalPoints": null,
-				"feeType": 1,
-				"feeUnit": 3,
-				"feeDuration": null,
-				"feeEffective": null,
-				"feeInvalid": null,
-				"startTime": null,
-				"expireTime": null,
-				"status": 1,
-				"img": "[]",
-				"desc": "测试包月",
-				"createTime": 1591930079000,
-				"updateTime": 1592998706000,
-				"outProductId": null
+				"id": 1
 			},
 			"bossServiceEntity": {
-				"id": 4,
-				"code": "666000002",
-				"name": "XX乐园增值包",
-				"status": 1,
-				"desc": null,
-				"createTime": 1592560850000,
-				"updateTime": null
+				"id": 4
 			},
-			"status": 0,
-			"desc": null,
-			"createTime": null,
-			"updateTime": 1593018577000
+			"status": 0
 		},
 		{
 			"bossProductEntity": {
-				"id": 1,
-				"code": "Fee_Month_TEST_AS",
-				"name": "包月",
-				"type": 2,
-				"price": null,
-				"originalPrice": null,
-				"points": null,
-				"originalPoints": null,
-				"feeType": 1,
-				"feeUnit": 3,
-				"feeDuration": null,
-				"feeEffective": null,
-				"feeInvalid": null,
-				"startTime": null,
-				"expireTime": null,
-				"status": 1,
-				"img": "[]",
-				"desc": "测试包月",
-				"createTime": 1591930079000,
-				"updateTime": 1592998706000,
-				"outProductId": null
+				"id": 1
 			},
 			"bossServiceEntity": {
-				"id": 2,
-				"code": "666100003",
-				"name": "XX增值包",
-				"status": 1,
-				"desc": null,
-				"createTime": 1592560857000,
-				"updateTime": null
+				"id": 2
 			},
-			"status": 1,
-			"desc": null,
-			"createTime": null,
-			"updateTime": 1593002632000
+			"status": 1
 		}
 	]
 }
