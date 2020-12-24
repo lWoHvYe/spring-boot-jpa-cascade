@@ -4,10 +4,9 @@ import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.service.dto.BossProductDTO;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
 import org.springframework.data.domain.Pageable;
-import java.util.Map;
+
 import java.util.List;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
 * @author why
@@ -42,6 +41,4 @@ public interface BossProductService {
     void update(BossProductEntity resources);
 
     void delete(Long id);
-
-    void download(List<BossProductDTO> all, HttpServletResponse response) throws IOException;
 }

@@ -5,16 +5,11 @@ import cn.hutool.core.bean.copier.CopyOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author why
@@ -35,31 +30,9 @@ public class BossServiceEntity implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    // CODE
-    @Column(name = "code")
-    private String code = "bossService_" + UUID.randomUUID();
-
     // 名称
     @Column(name = "name")
     private String name;
-
-    // 状态：0-下线，1-上线
-    @Column(name = "status")
-    private Integer status;
-
-    // 描述
-    @Column(name = "`desc`")
-    private String desc;
-
-    // 创建时间
-    @CreatedDate
-    @Column(name = "create_time")
-    private Timestamp createTime;
-
-    // 更新时间
-    @LastModifiedDate
-    @Column(name = "update_time")
-    private Timestamp updateTime;
 
     // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题。但只适用于单方维护关系的场景。
 //    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

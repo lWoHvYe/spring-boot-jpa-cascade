@@ -30,13 +30,6 @@ public class BossProductController {
         this.bossProductService = bossProductService;
     }
 
-    @Log("导出数据")
-    @ApiOperation("导出数据")
-    @GetMapping(value = "/download")
-    public void download(HttpServletResponse response, BossProductQueryCriteria criteria) throws IOException {
-        bossProductService.download(bossProductService.queryAll(criteria), response);
-    }
-
     @GetMapping
     @Log("查询BossProduct")
     @ApiOperation("查询BossProduct")

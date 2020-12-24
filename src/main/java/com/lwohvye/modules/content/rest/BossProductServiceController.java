@@ -29,14 +29,6 @@ public class BossProductServiceController {
         this.bossProductServiceService = bossProductServiceService;
     }
 
-    @Log("导出数据")
-    @ApiOperation("导出数据")
-    @GetMapping(value = "/download")
-    @PreAuthorize("@el.check('bossProductService:list')")
-    public void download(HttpServletResponse response, BossProductServiceQueryCriteria criteria) throws IOException {
-        bossProductServiceService.download(bossProductServiceService.queryAll(criteria), response);
-    }
-
     @GetMapping
     @Log("查询BossProductService")
     @ApiOperation("查询BossProductService")

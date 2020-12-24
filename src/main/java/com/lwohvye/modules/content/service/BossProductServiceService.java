@@ -43,5 +43,4 @@ public interface BossProductServiceService {
 
     void delete(Long id);
 
-    void download(List<BossProductServiceDTO> all, HttpServletResponse response) throws IOException;
 }

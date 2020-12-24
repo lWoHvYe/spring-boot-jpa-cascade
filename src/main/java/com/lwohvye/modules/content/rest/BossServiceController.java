@@ -31,13 +31,6 @@ public class BossServiceController {
         this.bossServiceService = bossServiceService;
     }
 
-    @Log("导出数据")
-    @ApiOperation("导出数据")
-    @GetMapping(value = "/download")
-    public void download(HttpServletResponse response, BossServiceQueryCriteria criteria) throws IOException {
-        bossServiceService.download(bossServiceService.queryAll(criteria), response);
-    }
-
     @GetMapping
     @Log("查询BossService")
     @ApiOperation("查询BossService")

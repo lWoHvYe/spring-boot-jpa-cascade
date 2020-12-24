@@ -44,20 +44,6 @@ public class BossProductServiceEntity implements Serializable {
     @Column(name = "status")
     private Integer status;
 
-    // 描述
-    @Column(name = "`desc`")
-    private String desc;
-
-    // 创建时间
-    @CreatedDate
-    @Column(name = "create_time")
-    private Timestamp createTime;
-
-    // 更新时间
-    @LastModifiedDate
-    @Column(name = "update_time")
-    private Timestamp updateTime;
-
     public void copy(BossProductServiceEntity source){
         BeanUtil.copyProperties(source,this, CopyOptions.create().setIgnoreNullValue(true));
     }

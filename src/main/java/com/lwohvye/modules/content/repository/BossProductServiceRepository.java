@@ -20,11 +20,4 @@ public interface BossProductServiceRepository extends JpaRepository<BossProductS
 
     Optional<BossProductServiceEntity> findFirstByBossProductEntity_IdAndBossServiceEntity_Id(Long productId, Long serviceId);
 
-    @Modifying
-    @Query(value = "update BossProductServiceEntity set status = 0 where bossProductEntity.id = ?1")
-    void updateByProductId(Long productId);
-
-    @Modifying
-    @Query(value = "update BossProductServiceEntity set status = 0 where bossServiceEntity.id = ?1")
-    void updateByServiceId(Long serviceId);
 }
