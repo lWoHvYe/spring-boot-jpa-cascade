@@ -41,8 +41,7 @@ public class BossProductServiceImpl implements BossProductService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> queryAll(BossProductQueryCriteria criteria, Pageable pageable) {
-        Page<BossProductEntity> page = bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria,
-                criteriaBuilder), pageable);
+        Page<BossProductEntity> page = bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtil.toPage(page.map(bossProductMapper::toDto));
     }
 

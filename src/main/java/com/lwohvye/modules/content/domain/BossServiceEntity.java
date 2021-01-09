@@ -2,6 +2,7 @@ package com.lwohvye.modules.content.domain;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.util.ObjectUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -49,11 +50,11 @@ public class BossServiceEntity implements Serializable {
     //    需要重写set方法
 //    针对的报错 A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance
     public void setBossProductServiceEntities(Set<BossProductServiceEntity> bossProductServiceEntities) {
-        if (this.bossProductServiceEntities == null) {
+        if (ObjectUtil.isNull(this.bossProductServiceEntities)) {
             this.bossProductServiceEntities = bossProductServiceEntities;
-        } else if (this.bossProductServiceEntities != bossProductServiceEntities) {// not the same instance, in other case we can get ConcurrentModificationException from hibernate AbstractPersistentCollection
+        } else if (ObjectUtil.notEqual(this.bossProductServiceEntities, bossProductServiceEntities)) {// not the same instance, in other case we can get ConcurrentModificationException from hibernate AbstractPersistentCollection
             this.bossProductServiceEntities.clear();
-            if (bossProductServiceEntities != null) {
+            if (ObjectUtil.isNotNull(bossProductServiceEntities)) {
                 this.bossProductServiceEntities.addAll(bossProductServiceEntities);
             }
         }
