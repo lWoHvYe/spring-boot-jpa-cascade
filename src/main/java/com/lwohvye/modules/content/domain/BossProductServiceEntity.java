@@ -36,12 +36,13 @@ public class BossProductServiceEntity implements Serializable {
 //    使用EAGER的好处是在jpa侧，直接通过left outer join一次查出来了。
     // TODO: 2021/1/9   这种配置方式是否可行待验证
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    @JoinColumn(name = "product_id")
     private BossProductEntity bossProductEntity;
 
+    // insertable = false, updatable = false 不要随便使用不了解的配置。这两个设置为该字段不设置值、不更新值。类似交由数据库默认值维护
     // 服务
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "service_id", insertable = false, updatable = false)
+    @JoinColumn(name = "service_id")
     private BossServiceEntity bossServiceEntity;
 
     // 状态：0-下线，1-上线
