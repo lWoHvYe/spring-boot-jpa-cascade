@@ -49,6 +49,10 @@ public class BossProductServiceEntity implements Serializable {
     @Column(name = "status")
     private Integer status;
 
+    //    顺序
+    @Column(name = "sequence")
+    private Integer sequence;
+
     public void copy(BossProductServiceEntity source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
     }

@@ -6,6 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -45,6 +46,12 @@ public class BossServiceEntity implements Serializable {
     // TODO: 2020/12/2 需要级联查询与更新。使用下面这种方式
     @JoinColumn(name = "service_id")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    sql排序
+    @OrderBy(value = "sequence ASC , id desc ")
+//    前端实体排序。一般用于后续处理时的顺序
+    @OrderColumn(name = "sequence")
+//    sql筛选
+    @Where(clause = " status = 1 ")
     private Set<BossProductServiceEntity> bossProductServiceEntities;
 
     //    需要重写set方法

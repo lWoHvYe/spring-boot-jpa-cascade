@@ -3,7 +3,26 @@
 Jpa 实际关系注解测试
 
 @ManyToOne @OneToMany注解版本。前端传数据时，关联关系可不包含当前实体的属性
+使用
 
+```java
+import org.hibernate.annotations.Where;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
+
+@OneToMany
+@JoinColumn
+// 排序 加到sql上
+@OrderBy(value = "sequence DESC, id ASC")
+// 前端传的实体会按照此顺序排列
+@OrderColumn("sequence DESC")
+// 筛选 加到sql上
+@Where(clause = " status = 1 ")
+private Set<Role> roles;
+```
 新增时，可携带关联关系。关联关系中不包含产品相关属性。 保存时，会先add产品id为null的关联记录。再执行update 新增商品示例
 
 ```json5

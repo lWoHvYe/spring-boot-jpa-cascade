@@ -23,4 +23,5 @@ public class BossProductServiceDTO implements Serializable {
     // 状态：0-下线，1-上线
     private Integer status;
 
+    private Integer sequence;
 }
