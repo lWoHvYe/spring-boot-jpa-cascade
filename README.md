@@ -35,13 +35,15 @@ private Set<Role> roles;
       "bossServiceEntity": {
         "id": 3
       },
-      "status": 0
+      "status": 0,
+      "sequence": 2 
     },
     {
       "bossServiceEntity": {
         "id": 4
       },
-      "status": 0
+      "status": 0,
+      "sequence": 1
     }
   ]
 }
@@ -60,14 +62,16 @@ private Set<Role> roles;
       "bossServiceEntity": {
         "id": 3
       },
-      "status": 0
+      "status": 0,
+      "sequence": 2
     },
     {
       "id": 9,
       "bossServiceEntity": {
         "id": 4
       },
-      "status": 0
+      "status": 0,
+      "sequence": 1
     }
   ]
 }
@@ -86,13 +90,15 @@ private Set<Role> roles;
       "bossServiceEntity": {
         "id": 4
       },
-      "status": 0
+      "status": 0,
+      "sequence": 1
     },
     {
       "bossServiceEntity": {
         "id": 2
       },
-      "status": 1
+      "status": 1,
+      "sequence": 2
     }
   ]
 }
