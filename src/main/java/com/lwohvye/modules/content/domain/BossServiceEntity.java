@@ -52,6 +52,8 @@ public class BossServiceEntity implements Serializable {
     @OrderColumn(name = "sequence")
 //    sql筛选
     @Where(clause = " status = 1 ")
+    // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
+    // 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
     private Set<BossProductServiceEntity> bossProductServiceEntities;
 
     //    需要重写set方法
