@@ -57,6 +57,7 @@ public class BossProductEntity implements Serializable {
 //    sql筛选
     @Where(clause = " status = 1 ")
     // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
+//    使用Set存取顺序不一致是因为使用的实现是HashSet，
     // 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
     private Set<BossProductServiceEntity> bossProductServiceEntities;
 
