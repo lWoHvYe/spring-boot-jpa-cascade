@@ -17,11 +17,14 @@ import javax.persistence.OrderColumn;
 @JoinColumn
 // 排序 加到sql上
 @OrderBy(value = "sequence DESC, id ASC")
-// 前端传的实体会按照此顺序排列
+// 前端传的实体会按照此顺序排列，影响jpa级联更新的顺序
 @OrderColumn("sequence DESC")
 // 筛选 加到sql上
 @Where(clause = " status = 1 ")
+// 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
 private Set<Role> roles;
+// 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
+//private List<Role> roles;
 ```
 新增时，可携带关联关系。关联关系中不包含产品相关属性。 保存时，会先add产品id为null的关联记录。再执行update 新增商品示例
 

@@ -6,7 +6,6 @@ import com.lwohvye.modules.content.service.BossProductService;
 import com.lwohvye.modules.content.service.dto.BossProductDTO;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
 import com.lwohvye.modules.content.service.mapper.BossProductMapper;
-import com.lwohvye.utils.FileUtil;
 import com.lwohvye.utils.PageUtil;
 import com.lwohvye.utils.QueryHelp;
 import com.lwohvye.utils.ValidationUtil;
@@ -17,10 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,8 +43,7 @@ public class BossProductServiceImpl implements BossProductService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<BossProductDTO> queryAll(BossProductQueryCriteria criteria) {
-        return bossProductMapper.toDto(bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria,
-                criteriaBuilder)));
+        return bossProductMapper.toDto(bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)));
     }
 
     @Override
