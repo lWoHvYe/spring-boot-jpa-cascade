@@ -116,6 +116,7 @@ public class BossProductEntity implements Serializable {
     private String outProductId;
 
     // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题
+    // TODO: cascade = CascadeType.ALL 在保持时会出问题，可能需要移除掉，待确认
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "boss_product__service",
             joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
