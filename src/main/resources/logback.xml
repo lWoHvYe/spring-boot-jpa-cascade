@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
-    <contextName>BossAdmin</contextName>
+    <contextName>JpaCascade</contextName>
     <!--定义参数,后面可以通过${app.name}使用-->
-    <property name="app.name" value="boss-admin"/>
+    <property name="app.name" value="jpa-cascade"/>
     <property name="log.path" value="./logs"/>
     <property name="log.pattern" value="%d [%thread] %-5level %logger{36} [%file : %line] - %msg%n"/>
 

@@ -1,9 +1,9 @@
 package com.lwohvye.modules.content.service.dto;
 
 import lombok.Data;
+import org.springframework.context.annotation.Lazy;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Set;
 
 
@@ -20,5 +20,6 @@ public class BossServiceDTO implements Serializable {
     // 名称
     private String name;
 
+    @Lazy
     private Set<BossProductServiceDTO> bossProductServiceEntities;
 }
