@@ -1,10 +1,9 @@
 package com.lwohvye.modules.content.rest;
 
+import com.lwohvye.annotation.AnonymousAccess;
+import com.lwohvye.modules.content.domain.BossServiceEntity;
 import com.lwohvye.modules.content.service.BossServiceService;
 import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
-import com.lwohvye.modules.content.domain.BossServiceEntity;
-import com.lwohvye.annotation.AnonymousAccess;
-import com.lwohvye.annotation.Log;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Pageable;
@@ -12,9 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
 * @author why
@@ -32,7 +28,6 @@ public class BossServiceController {
     }
 
     @GetMapping
-    @Log("查询BossService")
     @ApiOperation("查询BossService")
     @AnonymousAccess
     public ResponseEntity getBossServices(BossServiceQueryCriteria criteria, Pageable pageable){
@@ -40,7 +35,6 @@ public class BossServiceController {
     }
 
     @PostMapping
-    @Log("新增BossService")
     @ApiOperation("新增BossService")
     @AnonymousAccess
     public ResponseEntity create(@Validated @RequestBody BossServiceEntity resources){
@@ -48,7 +42,6 @@ public class BossServiceController {
     }
 
     @PutMapping
-    @Log("修改BossService")
     @ApiOperation("修改BossService")
     @AnonymousAccess
     public ResponseEntity update(@Validated @RequestBody BossServiceEntity resources){
@@ -57,7 +50,6 @@ public class BossServiceController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @Log("删除BossService")
     @ApiOperation("删除BossService")
     @AnonymousAccess
     public ResponseEntity delete(@PathVariable Long id){

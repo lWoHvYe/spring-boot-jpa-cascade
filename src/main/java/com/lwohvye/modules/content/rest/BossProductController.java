@@ -1,19 +1,17 @@
 package com.lwohvye.modules.content.rest;
 
+import com.lwohvye.annotation.AnonymousAccess;
+import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.service.BossProductService;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
-import com.lwohvye.modules.content.domain.BossProductEntity;
-import com.lwohvye.annotation.AnonymousAccess;
-import com.lwohvye.annotation.Log;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
 * @author why
@@ -31,7 +29,6 @@ public class BossProductController {
     }
 
     @GetMapping
-    @Log("查询BossProduct")
     @ApiOperation("查询BossProduct")
     @AnonymousAccess
     public ResponseEntity getBossProducts(BossProductQueryCriteria criteria, Pageable pageable){
@@ -39,7 +36,6 @@ public class BossProductController {
     }
 
     @PostMapping
-    @Log("新增BossProduct")
     @ApiOperation("新增BossProduct")
     @AnonymousAccess
     public ResponseEntity create(@Validated @RequestBody BossProductEntity resources){
@@ -47,7 +43,6 @@ public class BossProductController {
     }
 
     @PutMapping
-    @Log("修改BossProduct")
     @ApiOperation("修改BossProduct")
     @AnonymousAccess
     public ResponseEntity update(@Validated @RequestBody BossProductEntity resources){
@@ -56,7 +51,6 @@ public class BossProductController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @Log("删除BossProduct")
     @AnonymousAccess
     @PreAuthorize("@el.check('bossProduct:del')")
     public ResponseEntity delete(@PathVariable Long id){

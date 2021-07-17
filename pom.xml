@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.4.RELEASE</version>
-        <relativePath/>
+        <artifactId>eladmin</artifactId>
+        <groupId>com.lwohvye</groupId>
+        <version>2.6.11</version>
     </parent>
-    <groupId>com.lwohvye</groupId>
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>spring-boot-jpa-cascade</artifactId>
     <version>1.0</version>
     <name>spring-boot-jpa-cascade</name>
@@ -17,7 +15,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mapstruct.version>1.3.1.Final</mapstruct.version>
         <spring-boot-jpa-cascade.version>1.0</spring-boot-jpa-cascade.version>
     </properties>
 
@@ -25,8 +22,8 @@
         <!--system模块-->
         <dependency>
             <groupId>com.lwohvye</groupId>
-            <artifactId>eladmin-system</artifactId>
-            <version>2.6</version>
+            <artifactId>eladmin-common</artifactId>
+            <version>2.6.11</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
