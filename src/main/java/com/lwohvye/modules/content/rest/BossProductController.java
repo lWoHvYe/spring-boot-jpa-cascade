@@ -52,7 +52,7 @@ public class BossProductController {
 
     @DeleteMapping(value = "/{id}")
     @AnonymousAccess
-    @PreAuthorize("@el.check('bossProduct:del')")
+    @ApiOperation("删除BossProduct")
     public ResponseEntity delete(@PathVariable Long id){
         bossProductService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
