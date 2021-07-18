@@ -29,7 +29,6 @@ public class BossProductEntity implements Serializable {
 
     // ID
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
