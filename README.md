@@ -106,3 +106,405 @@ private Set<Role> roles;
   ]
 }
 ```
+
+####分表后
+###### 产品列表（分库分表） 多个库，多次查询
+````json5
+{
+  "content": [
+    {
+      "id": 2,
+      "name": "VIP影视增值包月0.01元",
+      "type": 2,
+      "bossProductServiceEntities": [
+        {
+          "id": 3,
+          "bossProductEntity": {
+            "id": 2,
+            "name": "VIP影视增值包月0.01元",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 3,
+            "name": "VIP影视增值包"
+          },
+          "status": 1,
+          "sequence": 20
+        },
+        {
+          "id": 2,
+          "bossProductEntity": {
+            "id": 2,
+            "name": "VIP影视增值包月0.01元",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 4,
+            "name": "优宝乐园增值包"
+          },
+          "status": 1,
+          "sequence": 1
+        },
+        {
+          "id": 24,
+          "bossProductEntity": {
+            "id": 2,
+            "name": "VIP影视增值包月0.01元",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 1,
+            "name": "服务包爱上测试"
+          },
+          "status": 1,
+          "sequence": 8
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "爱看包月0.01元",
+      "type": 2,
+      "bossProductServiceEntities": [
+        {
+          "id": 13,
+          "bossProductEntity": {
+            "id": 4,
+            "name": "爱看包月0.01元",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 1,
+            "name": "服务包爱上测试"
+          },
+          "status": 1,
+          "sequence": 21
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "包月",
+      "type": 3,
+      "bossProductServiceEntities": []
+    },
+    {
+      "id": 10,
+      "name": "包月-1222",
+      "type": 1,
+      "bossProductServiceEntities": []
+    },
+    {
+      "id": 5,
+      "name": "测试包",
+      "type": 2,
+      "bossProductServiceEntities": [
+        {
+          "id": 15,
+          "bossProductEntity": {
+            "id": 5,
+            "name": "测试包",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 2,
+            "name": "爱看增值包"
+          },
+          "status": 1,
+          "sequence": 16
+        },
+        {
+          "id": 16,
+          "bossProductEntity": {
+            "id": 5,
+            "name": "测试包",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 4,
+            "name": "优宝乐园增值包"
+          },
+          "status": 1,
+          "sequence": 24
+        },
+        {
+          "id": 17,
+          "bossProductEntity": {
+            "id": 5,
+            "name": "测试包",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 3,
+            "name": "VIP影视增值包"
+          },
+          "status": 1,
+          "sequence": 6
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "包月-1224",
+      "type": 1,
+      "bossProductServiceEntities": []
+    },
+    {
+      "id": 3,
+      "name": "优宝乐园包月100.01元",
+      "type": 3,
+      "bossProductServiceEntities": [
+        {
+          "id": 43,
+          "bossProductEntity": {
+            "id": 3,
+            "name": "优宝乐园包月100.01元",
+            "type": 3
+          },
+          "bossServiceEntity": {
+            "id": 5,
+            "name": "服务包0625"
+          },
+          "status": 1,
+          "sequence": 28
+        },
+        {
+          "id": 18,
+          "bossProductEntity": {
+            "id": 3,
+            "name": "优宝乐园包月100.01元",
+            "type": 3
+          },
+          "bossServiceEntity": {
+            "id": 2,
+            "name": "爱看增值包"
+          },
+          "status": 1,
+          "sequence": 15
+        },
+        {
+          "id": 19,
+          "bossProductEntity": {
+            "id": 3,
+            "name": "优宝乐园包月100.01元",
+            "type": 3
+          },
+          "bossServiceEntity": {
+            "id": 1,
+            "name": "服务包爱上测试"
+          },
+          "status": 1,
+          "sequence": 25
+        },
+        {
+          "id": 42,
+          "bossProductEntity": {
+            "id": 3,
+            "name": "优宝乐园包月100.01元",
+            "type": 3
+          },
+          "bossServiceEntity": {
+            "id": 3,
+            "name": "VIP影视增值包"
+          },
+          "status": 1,
+          "sequence": 16
+        }
+      ]
+    }
+  ],
+  "totalElements": 7
+}
+````
+###### 服务包列表（分库）
+````json5
+{
+  "content": [
+    {
+      "id": 2,
+      "name": "爱看增值包",
+      "bossProductServiceEntities": [
+        {
+          "id": 15,
+          "bossProductEntity": {
+            "id": 5,
+            "name": "测试包",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 2,
+            "name": "爱看增值包"
+          },
+          "status": 1,
+          "sequence": 16
+        },
+        {
+          "id": 18,
+          "bossProductEntity": {
+            "id": 3,
+            "name": "优宝乐园包月100.01元",
+            "type": 3
+          },
+          "bossServiceEntity": {
+            "id": 2,
+            "name": "爱看增值包"
+          },
+          "status": 1,
+          "sequence": 15
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "优宝乐园增值包",
+      "bossProductServiceEntities": [
+        {
+          "id": 16,
+          "bossProductEntity": {
+            "id": 5,
+            "name": "测试包",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 4,
+            "name": "优宝乐园增值包"
+          },
+          "status": 1,
+          "sequence": 24
+        },
+        {
+          "id": 2,
+          "bossProductEntity": {
+            "id": 2,
+            "name": "VIP影视增值包月0.01元",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 4,
+            "name": "优宝乐园增值包"
+          },
+          "status": 1,
+          "sequence": 1
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "服务包爱上测试",
+      "bossProductServiceEntities": [
+        {
+          "id": 19,
+          "bossProductEntity": {
+            "id": 3,
+            "name": "优宝乐园包月100.01元",
+            "type": 3
+          },
+          "bossServiceEntity": {
+            "id": 1,
+            "name": "服务包爱上测试"
+          },
+          "status": 1,
+          "sequence": 25
+        },
+        {
+          "id": 13,
+          "bossProductEntity": {
+            "id": 4,
+            "name": "爱看包月0.01元",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 1,
+            "name": "服务包爱上测试"
+          },
+          "status": 1,
+          "sequence": 21
+        },
+        {
+          "id": 24,
+          "bossProductEntity": {
+            "id": 2,
+            "name": "VIP影视增值包月0.01元",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 1,
+            "name": "服务包爱上测试"
+          },
+          "status": 1,
+          "sequence": 8
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "VIP影视增值包",
+      "bossProductServiceEntities": [
+        {
+          "id": 3,
+          "bossProductEntity": {
+            "id": 2,
+            "name": "VIP影视增值包月0.01元",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 3,
+            "name": "VIP影视增值包"
+          },
+          "status": 1,
+          "sequence": 20
+        },
+        {
+          "id": 42,
+          "bossProductEntity": {
+            "id": 3,
+            "name": "优宝乐园包月100.01元",
+            "type": 3
+          },
+          "bossServiceEntity": {
+            "id": 3,
+            "name": "VIP影视增值包"
+          },
+          "status": 1,
+          "sequence": 16
+        },
+        {
+          "id": 17,
+          "bossProductEntity": {
+            "id": 5,
+            "name": "测试包",
+            "type": 2
+          },
+          "bossServiceEntity": {
+            "id": 3,
+            "name": "VIP影视增值包"
+          },
+          "status": 1,
+          "sequence": 6
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "服务包0625",
+      "bossProductServiceEntities": [
+        {
+          "id": 43,
+          "bossProductEntity": {
+            "id": 3,
+            "name": "优宝乐园包月100.01元",
+            "type": 3
+          },
+          "bossServiceEntity": {
+            "id": 5,
+            "name": "服务包0625"
+          },
+          "status": 1,
+          "sequence": 28
+        }
+      ]
+    }
+  ],
+  "totalElements": 5
+}
+````
