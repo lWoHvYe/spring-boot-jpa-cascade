@@ -342,7 +342,7 @@ spring:
           actual-data-nodes: ds$->{0..1}.boss_product_$->{0..1}
           table-strategy:
             inline:
-              sharding-column: id
+              sharding-column: type
               algorithm-expression: boss_product_$->{type % 2}
         ###### <boss_service表> 分库不分表######
         boss_service:
