@@ -46,7 +46,7 @@ INSERT INTO `boss_product` VALUES (10, NULL, '包月-1222', 1);
 -- ----------------------------
 DROP TABLE IF EXISTS `boss_product_0`;
 CREATE TABLE `boss_product_0`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint NOT NULL COMMENT 'ID',
   `code` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'CODE',
   `name` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
   `type` int NULL DEFAULT NULL COMMENT '类型，1-基础包产品 2-增值包产品 3-套餐产品',
@@ -65,7 +65,7 @@ INSERT INTO `boss_product_0` VALUES (4, '888000003', '爱看包月0.01元', 2);
 -- ----------------------------
 DROP TABLE IF EXISTS `boss_product_1`;
 CREATE TABLE `boss_product_1`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint NOT NULL COMMENT 'ID',
   `code` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'CODE',
   `name` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
   `type` int NULL DEFAULT NULL COMMENT '类型，1-基础包产品 2-增值包产品 3-套餐产品',
@@ -84,7 +84,7 @@ INSERT INTO `boss_product_1` VALUES (10, NULL, '包月-1222', 1);
 -- ----------------------------
 DROP TABLE IF EXISTS `boss_product__service`;
 CREATE TABLE `boss_product__service`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint NOT NULL COMMENT 'ID',
   `product_id` bigint NULL DEFAULT NULL COMMENT '产品ID',
   `service_id` bigint NULL DEFAULT NULL COMMENT '服务ID',
   `status` int NULL DEFAULT NULL COMMENT '状态：0-下线，1-上线',
@@ -124,7 +124,7 @@ INSERT INTO `boss_product__service` VALUES (43, 3, 5, 1, 28);
 -- ----------------------------
 DROP TABLE IF EXISTS `boss_service`;
 CREATE TABLE `boss_service`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint NOT NULL COMMENT 'ID',
   `name` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '名称',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '服务表' ROW_FORMAT = Dynamic;

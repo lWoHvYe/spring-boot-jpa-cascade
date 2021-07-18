@@ -1,5 +1,7 @@
 package com.lwohvye.modules.content.service.impl;
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 import com.lwohvye.modules.content.service.BossServiceService;
 import com.lwohvye.modules.content.service.dto.BossServiceDTO;
 import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
@@ -58,6 +60,8 @@ public class BossServiceServiceImpl implements BossServiceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BossServiceDTO create(BossServiceEntity resources) {
+        Snowflake snowflake = IdUtil.getSnowflake(1, 1);
+        resources.setId(snowflake.nextId());
         BossServiceEntity bossService = bossServiceRepository.save(resources);
         return bossServiceMapper.toDto(bossService);
     }
