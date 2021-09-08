@@ -39,6 +39,13 @@ public class BossProductServiceEntity implements Serializable {
     @JoinColumn(name = "product_id")
     private BossProductEntity bossProductEntity;
 
+//    referencedColumnName 指定另一实体关联的字段，默认是主键，如果不是需要进行指定，比如下面这个，指定通过非主键的code进行关联
+//    name 指定本实体中关联用字段，referencedColumnName 指定另一实体进行关联的字段
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "product_code",referencedColumnName = "code")
+//    private BossProductEntity bossProductEntity;
+
+
     // insertable = false, updatable = false 不要随便使用不了解的配置。这两个设置为该字段不设置值、不更新值。类似交由数据库默认值维护
     // 服务
     @ManyToOne(fetch = FetchType.EAGER)

@@ -65,6 +65,10 @@ public class BossProductEntity implements Serializable {
     // 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
     private Set<BossProductServiceEntity> bossProductServiceEntities;
 
+//    @JoinColumn(name = "product_code")
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private Set<BossProductServiceEntity> bossProductServiceEntities;
+
     //    需要重写set方法
 //    针对的报错 A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance
     public void setBossProductServiceEntities(Set<BossProductServiceEntity> bossProductServiceEntities) {
