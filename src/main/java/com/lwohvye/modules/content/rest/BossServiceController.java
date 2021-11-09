@@ -1,6 +1,5 @@
 package com.lwohvye.modules.content.rest;
 
-import com.lwohvye.annotation.AnonymousAccess;
 import com.lwohvye.modules.content.domain.BossServiceEntity;
 import com.lwohvye.modules.content.service.BossServiceService;
 import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
@@ -13,9 +12,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
-* @author why
-* @date 2020-06-23
-*/
+ * @author why
+ * @date 2020-06-23
+ */
 @Api(tags = "BossService管理")
 @RestController
 @RequestMapping("/api/bossService")
@@ -29,30 +28,26 @@ public class BossServiceController {
 
     @GetMapping
     @ApiOperation("查询BossService")
-    @AnonymousAccess
-    public ResponseEntity getBossServices(BossServiceQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity<>(bossServiceService.queryAll(criteria,pageable),HttpStatus.OK);
+    public ResponseEntity getBossServices(BossServiceQueryCriteria criteria, Pageable pageable) {
+        return new ResponseEntity<>(bossServiceService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @PostMapping
     @ApiOperation("新增BossService")
-    @AnonymousAccess
-    public ResponseEntity create(@Validated @RequestBody BossServiceEntity resources){
-        return new ResponseEntity<>(bossServiceService.create(resources),HttpStatus.CREATED);
+    public ResponseEntity create(@Validated @RequestBody BossServiceEntity resources) {
+        return new ResponseEntity<>(bossServiceService.create(resources), HttpStatus.CREATED);
     }
 
     @PutMapping
     @ApiOperation("修改BossService")
-    @AnonymousAccess
-    public ResponseEntity update(@Validated @RequestBody BossServiceEntity resources){
+    public ResponseEntity update(@Validated @RequestBody BossServiceEntity resources) {
         bossServiceService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(value = "/{id}")
     @ApiOperation("删除BossService")
-    @AnonymousAccess
-    public ResponseEntity delete(@PathVariable Long id){
+    public ResponseEntity delete(@PathVariable Long id) {
         bossServiceService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
