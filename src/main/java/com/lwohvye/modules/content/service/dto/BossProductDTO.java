@@ -1,6 +1,8 @@
 package com.lwohvye.modules.content.service.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.context.annotation.Lazy;
 
 import java.io.Serializable;
@@ -8,10 +10,12 @@ import java.util.Set;
 
 
 /**
-* @author why
-* @date 2020-06-23
-*/
-@Data
+ * @author why
+ * @date 2020-06-23
+ */
+@Getter
+@Setter
+@ToString
 public class BossProductDTO implements Serializable {
 
     // ID
