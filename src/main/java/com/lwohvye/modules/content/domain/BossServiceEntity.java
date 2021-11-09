@@ -24,6 +24,7 @@ import java.util.Set;
 @Setter
 @ToString
 @EntityListeners(AuditingEntityListener.class)
+//@NamedEntityGraph(name = "service-details", attributeNodes = {@NamedAttributeNode("bossProductServiceEntities")})
 @Table(name = "boss_service")
 public class BossServiceEntity implements Serializable {
 
