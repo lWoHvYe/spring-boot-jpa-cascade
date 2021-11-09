@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Where;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -50,9 +49,8 @@ public class BossProductEntity implements Serializable {
 
     // TODO: 2020/12/2 需要级联查询与更新。使用下面这种方式
 //    @Lazy注解注解的作用主要是减少springIOC容器启动的加载时间
-//    当出现循环依赖时，也可以添加@Lazy
-//    但这里并没有解决循环依赖问题
-    @Lazy
+//    当出现注入的循环依赖时，也可以添加@Lazy。但这里出现但并不是注入，所以加上无效。问题出现在序列化（toString()）时
+//    @Lazy
     @JoinColumn(name = "product_id")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 //    sql排序

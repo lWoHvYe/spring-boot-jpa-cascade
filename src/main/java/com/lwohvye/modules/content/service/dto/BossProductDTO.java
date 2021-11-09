@@ -3,7 +3,6 @@ package com.lwohvye.modules.content.service.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.context.annotation.Lazy;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -27,6 +26,5 @@ public class BossProductDTO implements Serializable {
     // 类型，1-基础包产品 2-增值包产品 3-套餐产品
     private Integer type;
 
-    @Lazy
     private Set<BossProductServiceDTO> bossProductServiceEntities;
 }

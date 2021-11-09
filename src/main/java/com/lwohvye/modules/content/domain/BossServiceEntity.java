@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Where;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -45,7 +44,7 @@ public class BossServiceEntity implements Serializable {
 //    private List<BossProductEntity> bossProducts;
 
     // TODO: 2020/12/2 需要级联查询与更新。使用下面这种方式
-    @Lazy
+//    @Lazy
     @JoinColumn(name = "service_id")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 //    sql排序

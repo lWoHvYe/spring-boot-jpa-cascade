@@ -2,6 +2,7 @@ package com.lwohvye.modules.content.service.impl;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
+import com.lwohvye.context.CycleAvoidingMappingContext;
 import com.lwohvye.modules.content.service.BossServiceService;
 import com.lwohvye.modules.content.service.dto.BossServiceDTO;
 import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
@@ -40,21 +41,20 @@ public class BossServiceServiceImpl implements BossServiceService {
     public Map<String, Object> queryAll(BossServiceQueryCriteria criteria, Pageable pageable) {
         Page<BossServiceEntity> page = bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria,
                 criteriaBuilder), pageable);
-        return PageUtil.toPage(page.map(bossServiceMapper::toDto));
+        return PageUtil.toPage(page.map(bossServiceEntity -> bossServiceMapper.toDto(bossServiceEntity, new CycleAvoidingMappingContext())));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<BossServiceDTO> queryAll(BossServiceQueryCriteria criteria) {
-        return bossServiceMapper.toDto(bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria,
-                criteriaBuilder)));
+        return bossServiceMapper.toDto(bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)), new CycleAvoidingMappingContext());
     }
 
     @Override
     public BossServiceDTO findById(Long id) {
         BossServiceEntity bossService = bossServiceRepository.findById(id).orElseGet(BossServiceEntity::new);
         ValidationUtil.isNull(bossService.getId(), "BossService", "id", id);
-        return bossServiceMapper.toDto(bossService);
+        return bossServiceMapper.toDto(bossService, new CycleAvoidingMappingContext());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class BossServiceServiceImpl implements BossServiceService {
         Snowflake snowflake = IdUtil.getSnowflake(1, 1);
         resources.setId(snowflake.nextId());
         BossServiceEntity bossService = bossServiceRepository.save(resources);
-        return bossServiceMapper.toDto(bossService);
+        return bossServiceMapper.toDto(bossService, new CycleAvoidingMappingContext());
     }
 
     @Override

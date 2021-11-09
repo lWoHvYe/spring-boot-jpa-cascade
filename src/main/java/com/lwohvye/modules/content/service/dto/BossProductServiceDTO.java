@@ -24,10 +24,10 @@ public class BossProductServiceDTO implements Serializable {
     private Long id;
 
     // 产品ID
-    private BossProductDTO bossProductEntity;
+    private BossProductSmallDTO bossProductEntity;
 
     // 服务ID
-    private BossServiceDTO bossServiceEntity;
+    private BossServiceSmallDTO bossServiceEntity;
 
     // 状态：0-下线，1-上线
     private Integer status;
