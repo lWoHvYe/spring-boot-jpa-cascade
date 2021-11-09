@@ -7,10 +7,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 /**
-* @author why
-* @date 2020-06-23
-*/
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+ * @author why
+ * @date 2020-06-23
+ */
+@Mapper(componentModel = "spring", uses = {BossProductServiceMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BossProductMapper extends BaseMapper<BossProductDTO, BossProductEntity> {
 
 }

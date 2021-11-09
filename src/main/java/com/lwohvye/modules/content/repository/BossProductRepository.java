@@ -20,7 +20,7 @@ public interface BossProductRepository extends JpaRepository<BossProductEntity, 
     @Override
     @EntityGraph(value = "product-details")
     /*
-        配置EntityGraph后。分页查询查了所有记录
+        配置EntityGraph后。分页查询查了所有记录。然后在内存中分页
         #查product及product__service
         select bossproduc0_.id as id1_0_0_, bossproduc1_.id as id1_1_1_, bossproduc0_.name as name2_0_0_,
         bossproduc0_.type as type3_0_0_, bossproduc1_.product_id as product_4_1_1_, bossproduc1_.service_id
