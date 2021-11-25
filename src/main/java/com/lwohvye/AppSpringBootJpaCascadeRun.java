@@ -1,7 +1,7 @@
 package com.lwohvye;
 
 import com.lwohvye.utils.SpringContextHolder;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @EnableAsync
 @RestController
-@Api(hidden = true)
+@Hidden
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")

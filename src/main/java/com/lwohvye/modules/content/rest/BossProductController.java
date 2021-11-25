@@ -3,8 +3,8 @@ package com.lwohvye.modules.content.rest;
 import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.service.BossProductService;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @author why
  * @date 2020-06-23
  */
-@Api(tags = "BossProduct管理")
+@Tag(name = "BossProduct", description = "BossProduct管理")
 @RestController
 @RequestMapping("/api/bossProduct")
 public class BossProductController {
@@ -27,26 +27,26 @@ public class BossProductController {
     }
 
     @GetMapping
-    @ApiOperation("查询BossProduct")
+    @Operation(summary = "查询BossProduct")
     public ResponseEntity getBossProducts(BossProductQueryCriteria criteria, Pageable pageable) {
         return new ResponseEntity<>(bossProductService.queryAll(criteria, pageable), HttpStatus.OK);
     }
 
     @PostMapping
-    @ApiOperation("新增BossProduct")
+    @Operation(summary = "新增BossProduct")
     public ResponseEntity create(@Validated @RequestBody BossProductEntity resources) {
         return new ResponseEntity<>(bossProductService.create(resources), HttpStatus.CREATED);
     }
 
     @PutMapping
-    @ApiOperation("修改BossProduct")
+    @Operation(summary = "修改BossProduct")
     public ResponseEntity update(@Validated @RequestBody BossProductEntity resources) {
         bossProductService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(value = "/{id}")
-    @ApiOperation("删除BossProduct")
+    @Operation(summary = "删除BossProduct")
     public ResponseEntity delete(@PathVariable Long id) {
         bossProductService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
