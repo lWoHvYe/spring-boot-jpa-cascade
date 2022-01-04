@@ -12,6 +12,7 @@ import com.lwohvye.modules.content.repository.BossServiceRepository;
 import com.lwohvye.utils.PageUtil;
 import com.lwohvye.utils.QueryHelp;
 import com.lwohvye.utils.ValidationUtil;
+import org.apache.shardingsphere.infra.hint.HintManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,6 +64,11 @@ public class BossServiceServiceImpl implements BossServiceService {
         Snowflake snowflake = IdUtil.getSnowflake(1, 1);
         resources.setId(snowflake.nextId());
         BossServiceEntity bossService = bossServiceRepository.save(resources);
+        /* 4.1.1版本可以这样强制使用主库，5.x改了配置方式，有时间再看一下
+        通过使用 Sharding-JDBC 的 HintManager 分片键值管理器，可以强制使用主库。
+        HintManager hintManager = HintManager.getInstance();
+        hintManager.setMasterRouteOnly();
+        // 继续JDBC操作*/
         return bossServiceMapper.toDto(bossService, new CycleAvoidingMappingContext());
     }
 
