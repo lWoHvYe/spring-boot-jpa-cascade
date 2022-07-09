@@ -1,5 +1,6 @@
 package com.lwohvye.modules.content.service.impl;
 
+import com.lwohvye.context.CycleAvoidingMappingContext;
 import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.repository.BossProductRepository;
 import com.lwohvye.modules.content.repository.BossProductServiceRepository;
@@ -60,21 +61,21 @@ public class BossProductServiceImpl implements BossProductService {
 //        Map<String, Object> map = Maps.newLinkedHashMapWithExpectedSize(2);
 //        map.put("content", content);
 //        map.put("totalElements", page.getTotalElements());
-        return PageUtil.toPage(page.map(bossProductMapper::toDto));
+        return PageUtil.toPage(page.map(bossProductEntity -> bossProductMapper.toDto(bossProductEntity, new CycleAvoidingMappingContext())));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<BossProductDTO> queryAll(BossProductQueryCriteria criteria) {
         return bossProductMapper.toDto(bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria,
-                criteriaBuilder)));
+                criteriaBuilder)), new CycleAvoidingMappingContext());
     }
 
     @Override
     public BossProductDTO findById(Long id) {
         BossProductEntity bossProduct = bossProductRepository.findById(id).orElseGet(BossProductEntity::new);
         ValidationUtil.isNull(bossProduct.getId(), "BossProduct", "id", id);
-        return bossProductMapper.toDto(bossProduct);
+        return bossProductMapper.toDto(bossProduct, new CycleAvoidingMappingContext());
     }
 
     @Override
@@ -84,7 +85,7 @@ public class BossProductServiceImpl implements BossProductService {
 //        resources.setId(bossProduct.getId());
         // 保存关联关系
 //        saveLinks(resources);
-        return bossProductMapper.toDto(bossProduct);
+        return bossProductMapper.toDto(bossProduct, new CycleAvoidingMappingContext());
     }
 
     @Override

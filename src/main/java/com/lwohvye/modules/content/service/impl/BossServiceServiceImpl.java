@@ -1,5 +1,6 @@
 package com.lwohvye.modules.content.service.impl;
 
+import com.lwohvye.context.CycleAvoidingMappingContext;
 import com.lwohvye.modules.content.service.dto.BossServiceDTO;
 import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
 import com.lwohvye.modules.content.service.mapper.BossServiceMapper;
@@ -60,21 +61,21 @@ public class BossServiceServiceImpl implements BossServiceService {
 //        Map<String, Object> map = Maps.newLinkedHashMapWithExpectedSize(2);
 //        map.put("content", content);
 //        map.put("totalElements", page.getTotalElements());
-        return PageUtil.toPage(page.map(bossServiceMapper::toDto));
+        return PageUtil.toPage(page.map(bossServiceEntity -> bossServiceMapper.toDto(bossServiceEntity, new CycleAvoidingMappingContext())));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<BossServiceDTO> queryAll(BossServiceQueryCriteria criteria) {
         return bossServiceMapper.toDto(bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria,
-                criteriaBuilder)));
+                criteriaBuilder)), new CycleAvoidingMappingContext());
     }
 
     @Override
     public BossServiceDTO findById(Long id) {
         BossServiceEntity bossService = bossServiceRepository.findById(id).orElseGet(BossServiceEntity::new);
         ValidationUtil.isNull(bossService.getId(), "BossService", "id", id);
-        return bossServiceMapper.toDto(bossService);
+        return bossServiceMapper.toDto(bossService, new CycleAvoidingMappingContext());
     }
 
     @Override
@@ -83,7 +84,7 @@ public class BossServiceServiceImpl implements BossServiceService {
         BossServiceEntity bossService = bossServiceRepository.save(resources);
 //        resources.setId(bossService.getId());
 //        saveLinks(resources);
-        return bossServiceMapper.toDto(bossService);
+        return bossServiceMapper.toDto(bossService, new CycleAvoidingMappingContext());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.lwohvye.modules.content.service.impl;
 
+import com.lwohvye.context.CycleAvoidingMappingContext;
 import com.lwohvye.modules.content.domain.BossProductServiceEntity;
 import com.lwohvye.modules.content.repository.BossProductServiceRepository;
 import com.lwohvye.modules.content.service.dto.BossProductServiceDTO;
@@ -21,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author why
-* @date 2020-06-23
-*/
+ * @author why
+ * @date 2020-06-23
+ */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class BossProductServiceServiceImpl implements BossProductServiceService {
@@ -38,34 +39,35 @@ public class BossProductServiceServiceImpl implements BossProductServiceService 
     }
 
     @Override
-    public Map<String,Object> queryAll(BossProductServiceQueryCriteria criteria, Pageable pageable){
-        Page<BossProductServiceEntity> page = bossProductServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder),pageable);
-        return PageUtil.toPage(page.map(bossProductServiceMapper::toDto));
+    public Map<String, Object> queryAll(BossProductServiceQueryCriteria criteria, Pageable pageable) {
+        Page<BossProductServiceEntity> page = bossProductServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
+        return PageUtil.toPage(page.map(bossProductServiceEntity -> bossProductServiceMapper.toDto(bossProductServiceEntity, new CycleAvoidingMappingContext())));
     }
 
     @Override
-    public List<BossProductServiceDTO> queryAll(BossProductServiceQueryCriteria criteria){
-        return bossProductServiceMapper.toDto(bossProductServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root,criteria,criteriaBuilder)));
+    public List<BossProductServiceDTO> queryAll(BossProductServiceQueryCriteria criteria) {
+        return bossProductServiceMapper.toDto(bossProductServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)),
+                new CycleAvoidingMappingContext());
     }
 
     @Override
     public BossProductServiceDTO findById(Long id) {
         BossProductServiceEntity bossProductService = bossProductServiceRepository.findById(id).orElseGet(BossProductServiceEntity::new);
-        ValidationUtil.isNull(bossProductService.getId(),"BossProductService","id",id);
-        return bossProductServiceMapper.toDto(bossProductService);
+        ValidationUtil.isNull(bossProductService.getId(), "BossProductService", "id", id);
+        return bossProductServiceMapper.toDto(bossProductService, new CycleAvoidingMappingContext());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BossProductServiceDTO create(BossProductServiceEntity resources) {
-        return bossProductServiceMapper.toDto(bossProductServiceRepository.save(resources));
+        return bossProductServiceMapper.toDto(bossProductServiceRepository.save(resources), new CycleAvoidingMappingContext());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(BossProductServiceEntity resources) {
         BossProductServiceEntity bossProductService = bossProductServiceRepository.findById(resources.getId()).orElseGet(BossProductServiceEntity::new);
-        ValidationUtil.isNull( bossProductService.getId(),"BossProductService","id",resources.getId());
+        ValidationUtil.isNull(bossProductService.getId(), "BossProductService", "id", resources.getId());
         bossProductService.copy(resources);
         bossProductServiceRepository.save(bossProductService);
     }
