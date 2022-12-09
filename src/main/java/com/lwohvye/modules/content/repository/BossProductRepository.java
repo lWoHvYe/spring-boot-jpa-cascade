@@ -4,7 +4,6 @@ import com.lwohvye.modules.content.domain.BossProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -18,7 +17,7 @@ import java.util.Optional;
 public interface BossProductRepository extends JpaRepository<BossProductEntity, Long>, JpaSpecificationExecutor<BossProductEntity> {
 
     @Override
-    @EntityGraph(value = "product-details")
+//    @EntityGraph(value = "product-details")
     /*
         配置EntityGraph后。分页查询查了所有记录。然后在内存中分页
         #查product及product__service

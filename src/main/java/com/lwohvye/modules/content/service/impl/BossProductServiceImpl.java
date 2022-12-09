@@ -2,17 +2,16 @@ package com.lwohvye.modules.content.service.impl;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
-import com.lwohvye.context.CycleAvoidingMappingContext;
+import com.lwohvye.core.utils.PageUtils;
+import com.lwohvye.core.utils.QueryHelp;
+import com.lwohvye.core.utils.ValidationUtils;
 import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.repository.BossProductRepository;
 import com.lwohvye.modules.content.service.BossProductService;
 import com.lwohvye.modules.content.service.dto.BossProductDTO;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
-import com.lwohvye.modules.content.service.mapper.BossProductMapper;
-import com.lwohvye.utils.PageUtil;
-import com.lwohvye.utils.QueryHelp;
-import com.lwohvye.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,42 +33,42 @@ public class BossProductServiceImpl implements BossProductService {
     private BossProductRepository bossProductRepository;
 
     @Autowired
-    private BossProductMapper bossProductMapper;
+    private ConversionService conversionService;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Map<String, Object> queryAll(BossProductQueryCriteria criteria, Pageable pageable) {
         Page<BossProductEntity> page = bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
-        return PageUtil.toPage(page.map(bossProductEntity -> bossProductMapper.toDto(bossProductEntity, new CycleAvoidingMappingContext())));
+        return PageUtils.toPage(page.map(bossProductEntity -> conversionService.convert(bossProductEntity, BossProductDTO.class)));
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<BossProductDTO> queryAll(BossProductQueryCriteria criteria) {
-        return bossProductMapper.toDto(bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)), new CycleAvoidingMappingContext());
+        return bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder))
+                .stream().map(bossProductEntity -> conversionService.convert(bossProductEntity, BossProductDTO.class)).toList();
     }
 
     @Override
     public BossProductDTO findById(Long id) {
         BossProductEntity bossProduct = bossProductRepository.findById(id).orElseGet(BossProductEntity::new);
-        ValidationUtil.isNull(bossProduct.getId(), "BossProduct", "id", id);
-        return bossProductMapper.toDto(bossProduct, new CycleAvoidingMappingContext());
+        ValidationUtils.isNull(bossProduct.getId(), "BossProduct", "id", id);
+        return conversionService.convert(bossProduct, BossProductDTO.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BossProductDTO create(BossProductEntity resources) {
+    public void create(BossProductEntity resources) {
         Snowflake snowflake = IdUtil.getSnowflake(1, 1);
         resources.setId(snowflake.nextId());
-        BossProductEntity bossProduct = bossProductRepository.save(resources);
-        return bossProductMapper.toDto(bossProduct, new CycleAvoidingMappingContext());
+        bossProductRepository.save(resources);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(BossProductEntity resources) {
         BossProductEntity bossProduct = bossProductRepository.findById(resources.getId()).orElseGet(BossProductEntity::new);
-        ValidationUtil.isNull(bossProduct.getId(), "BossProduct", "id", resources.getId());
+        ValidationUtils.isNull(bossProduct.getId(), "BossProduct", "id", resources.getId());
         bossProduct.copy(resources);
         bossProductRepository.save(bossProduct);
     }

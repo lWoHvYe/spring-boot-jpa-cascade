@@ -2,18 +2,16 @@ package com.lwohvye.modules.content.service.impl;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
-import com.lwohvye.context.CycleAvoidingMappingContext;
+import com.lwohvye.core.utils.PageUtils;
+import com.lwohvye.core.utils.QueryHelp;
+import com.lwohvye.core.utils.ValidationUtils;
+import com.lwohvye.modules.content.domain.BossServiceEntity;
+import com.lwohvye.modules.content.repository.BossServiceRepository;
 import com.lwohvye.modules.content.service.BossServiceService;
 import com.lwohvye.modules.content.service.dto.BossServiceDTO;
 import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
-import com.lwohvye.modules.content.service.mapper.BossServiceMapper;
-import com.lwohvye.modules.content.domain.BossServiceEntity;
-import com.lwohvye.modules.content.repository.BossServiceRepository;
-import com.lwohvye.utils.PageUtil;
-import com.lwohvye.utils.QueryHelp;
-import com.lwohvye.utils.ValidationUtil;
-import org.apache.shardingsphere.infra.hint.HintManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,48 +33,47 @@ public class BossServiceServiceImpl implements BossServiceService {
     private BossServiceRepository bossServiceRepository;
 
     @Autowired
-    private BossServiceMapper bossServiceMapper;
+    private ConversionService conversionService;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Map<String, Object> queryAll(BossServiceQueryCriteria criteria, Pageable pageable) {
-        Page<BossServiceEntity> page = bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria,
-                criteriaBuilder), pageable);
-        return PageUtil.toPage(page.map(bossServiceEntity -> bossServiceMapper.toDto(bossServiceEntity, new CycleAvoidingMappingContext())));
+        Page<BossServiceEntity> page = bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
+        return PageUtils.toPage(page.map(bossProductEntity -> conversionService.convert(bossProductEntity, BossServiceDTO.class)));
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, readOnly = true)
     public List<BossServiceDTO> queryAll(BossServiceQueryCriteria criteria) {
-        return bossServiceMapper.toDto(bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder)), new CycleAvoidingMappingContext());
+        return bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder))
+                .stream().map(bossServiceEntity -> conversionService.convert(bossServiceEntity, BossServiceDTO.class)).toList();
     }
 
     @Override
     public BossServiceDTO findById(Long id) {
         BossServiceEntity bossService = bossServiceRepository.findById(id).orElseGet(BossServiceEntity::new);
-        ValidationUtil.isNull(bossService.getId(), "BossService", "id", id);
-        return bossServiceMapper.toDto(bossService, new CycleAvoidingMappingContext());
+        ValidationUtils.isNull(bossService.getId(), "BossService", "id", id);
+        return conversionService.convert(bossService, BossServiceDTO.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BossServiceDTO create(BossServiceEntity resources) {
+    public void create(BossServiceEntity resources) {
         Snowflake snowflake = IdUtil.getSnowflake(1, 1);
         resources.setId(snowflake.nextId());
-        BossServiceEntity bossService = bossServiceRepository.save(resources);
+        bossServiceRepository.save(resources);
         /* 4.1.1版本可以这样强制使用主库，5.x改了配置方式，有时间再看一下
         通过使用 Sharding-JDBC 的 HintManager 分片键值管理器，可以强制使用主库。
         HintManager hintManager = HintManager.getInstance();
         hintManager.setMasterRouteOnly();
         // 继续JDBC操作*/
-        return bossServiceMapper.toDto(bossService, new CycleAvoidingMappingContext());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(BossServiceEntity resources) {
         BossServiceEntity bossService = bossServiceRepository.findById(resources.getId()).orElseGet(BossServiceEntity::new);
-        ValidationUtil.isNull(bossService.getId(), "BossService", "id", resources.getId());
+        ValidationUtils.isNull(bossService.getId(), "BossService", "id", resources.getId());
         bossService.copy(resources);
         bossServiceRepository.save(bossService);
     }

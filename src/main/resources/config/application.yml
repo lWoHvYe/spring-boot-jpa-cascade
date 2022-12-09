@@ -5,7 +5,7 @@ spring:
   freemarker:
     check-template-location: false
   profiles:
-    active: dev-ms
+    active: dev
   jackson:
     time-zone: GMT+8
   data:
@@ -17,8 +17,8 @@ spring:
   jpa:
     properties:
       hibernate:
-        ddl-auto: none
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQLDialect
+        enable_lazy_no_trans: true
     open-in-view: true
 
   # cache配置
@@ -27,35 +27,55 @@ spring:
   # redis配置
   redis:
     #详细版的redisson配置可参考：https://github.com/redisson/redisson/tree/master/redisson-spring-boot-starter
-    # Connection URL, will override host, port and password (user will be ignored), e.g. redis://user:password@example.com:6379
-    url: redis://127.0.0.1:6379
-    timeout: 2000 # 连接或读取超时时长（毫秒）
-    database: 0
     redisson:
-      file: classpath:redisson.yml
-    jedis:
-      pool:
-        max-active: 10  # 连接池最大连接数（使用负值表示没有限制）
-        max-wait: 800 # 连接池最大阻塞等待时间（使用负值表示没有限制）
-        max-idle: 5 # 连接池中的最大空闲连接
-        min-idle: 2 # 连接池中的最小空闲连接
+      file: classpath:redisson.yaml
 
-task:
-  pool:
-    # 核心线程池大小
-    core-pool-size: 10
-    # 最大线程数
-    max-pool-size: 30
-    # 活跃时间
-    keep-alive-seconds: 60
-    # 队列容量
-    queue-capacity: 50
+  ##### RabbitMQ ####
+  rabbitmq:
+    #    RabbitMQ集群，通过addresses配置，多个以逗号分隔(优先取addresses，然后再取host)
+    addresses: 10.211.55.140:5672
+    virtual-host: /eladmin # rabbitmq的虚拟host
+    username: admin # rabbitmq的用户名
+    password: admin # rabbitmq的密码
+    ####开始消费最大重试次数，避免一直重复消费的问题
+    listener:
+      simple:
+        concurrency: 1 # Minimum number of consumers.
+        max-concurrency: 20 # Maximum number of consumers.
+        prefetch: 50
+        default-requeue-rejected: true #意思是，消息被拒后（即未消费），重新（true）放入队列
+        retry:
+          enabled: true #是否开启消费者重试（为false时关闭消费者重试，这时消费端代码异常会一直重复收到消息）
+          max-attempts: 3 #最大重试次数
+          initial-interval: 5000ms
 
-#邮箱验证码有效时间/秒
-code:
-  expiration: 300
+  servlet:
+    multipart:
+      max-file-size: 20MB #限制单个文件大小
+      max-request-size: 50MB #限制请求总量
 
 #密码加密传输，前端公钥加密，后端私钥解密
 rsa:
   private_key: MIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQC0puTIfyD5bzz7MJqqfn424Qz2OhWGck/9gDpf3ZFZ4CMRc9TUMafeMJUSeziuRJBSvJ8Ru1SE0CjAgGasm6DDm0Ad8ryd8pWwMu0HFyo0R++D2+5G75/e6h7+UG5r28XmUVgmpbP6cgyrnUlR4EQiimuWV7Jr4oHQ2LqG59UnOfMxTE+pSMgMqXTMtTJXOkTKd9vAEDyAmD9jIDTPJGfOX4470pPgX+RPJpxls0k7PVrh9xMhxXGS/8nWu3kENSweLNBrnzLbNXD2bzRYq7lvuTgymMhCKTTy9JqflLmI3s/2wxN3G8CkBpn3xm6Tw7EHlA4XY3HHVQGovvuXpE2HAgMBAAECggEAAmgKuiT/YnM547q1BLpkogSDcLA7YywYpq7TmD1SV1kl/nCFkEINE2egRLvBeIjPR1rd35WYPaCsOkw7kecM0C48P2nhW1VE6zDyeVq0pDelGCOQ2/8LKSQDP64Amo016KiCvRkN+bMVOiABPwb2wWMIpdsLNGazBf4tFej2rOwR5YTxBjRUsb55ID/SRSCpPT/1QAlGIv+UjX+jecIJqygkEXcCzClePN+sGBkOyBftZ7qlBrsU/FSeWb+McT2sqKBDA5tQNy0Q631MPAsGMKBYAcY52fmZcaVcmN21DnvIRinShSrO6+JeTbAeOSc4Hxnty4mqKti2i1v0Ua3XwQKBgQD7gfkhRr3Yt5JUbuUSOpTuDqsQmri7SFQ/dYfBHgHXGuZG1lNAF6VMaPkbgzjAoLx9SWvAzsoS+VsLPEpbzBYlFFS0fab0T50TOVEWwdnROCo8CGjPTgf9g8WGw6QN1IeHUr443Ae+2D9vx/BxsmZekAydi27Hy1PD5HcEDOoEJwKBgQC34O4li34P3DnEXrVJxGZ6PfECRukx9vSpsSGyVFHyABDRoQCR5pdJiF3l08WjiZSo6cHvr1JAkYx/vfQjJVHJqa8pKfz9AkaGCw5ciUFFRvGfLCv6EVJbuW5YtENjN8KuaVekEN1wJSG4r5DPDhnLxmV0ONVfpPJ27Xtg7FRnoQJ/TKFNRtZHAcDs1Mz0/pjax62wcV6y6l0fTjaBJlX+OYv4nZyvwNdzhdR2EevpXseappG4Qwa+iwlus/2qqk2EccfABz5BoC6hrTnJeyWVOCnktGXbiU49IQEFLgpt8cjPgmuziZ+AvKUmrug8WmgAyM8bCOVy220YGJeDq7hDlQKBgE3DbnOqXpHOjQ+jDgA4cy5Xa8mOu6hJzIbHRnzodA9oP7Sn5lnNr0WFylAcE4Vp9djJox7+gkaUR1rutoT2j3Q9srox67AEelbN7jDsSxJFQoISaDbFhJMOBMC225jmSAsCufHEwCFhUrWMai1mxToMmXNhZbuhQnlRTdBbogaBAoGAae8hgwu4VgIrEBHvkhVsBDK2wib6JjbrTbWZh8LwMOUdTZEUNfHaXyXjkpDmJ/HkDQ8IgmOn4ZXSIv9kqr+BAepC+lhOE8m6FbE0vFXeW2izFcWLXH3d4GTL8QCKAgZdWd/iF2cBt/puJgy+B6Ym4izwre3qSG+DhqpoQ3ogtis=
   public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtKbkyH8g+W88+zCaqn5+NuEM9joVhnJP/YA6X92RWeAjEXPU1DGn3jCVEns4rkSQUryfEbtUhNAowIBmrJugw5tAHfK8nfKVsDLtBxcqNEfvg9vuRu+f3uoe/lBua9vF5lFYJqWz+nIMq51JUeBEIoprlleya+KB0Ni6hufVJznzMUxPqUjIDKl0zLUyVzpEynfbwBA8gJg/YyA0zyRnzl+OO9KT4F/kTyacZbNJOz1a4fcTIcVxkv/J1rt5BDUsHizQa58y2zVw9m80WKu5b7k4MpjIQik08vSan5S5iN7P9sMTdxvApAaZ98Zuk8OxB5QOF2Nxx1UBqL77l6RNhwIDAQAB
+
+# IP 本地解析
+ip:
+  local-parsing: false
+
+# ===== SpringDoc配置 ===== #
+springdoc:
+  api-docs:
+    # enabled the /v3/api-docs endpoint
+    enabled: true
+
+# ===== 自定义swagger配置 ===== #
+swagger:
+  application-name: ${spring.application.name}
+  application-version: 3.2.0
+  application-description: 1101100_1010111_1101111_1001000_1110110_1011001_1100101
+  try-host: http://localhost:${server.port}
+
+local:
+  sys:
+    sim-auth: true

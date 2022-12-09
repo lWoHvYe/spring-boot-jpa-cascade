@@ -1,5 +1,6 @@
 package com.lwohvye.modules.content.rest;
 
+import com.lwohvye.core.utils.result.ResultInfo;
 import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.service.BossProductService;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author why
@@ -28,27 +31,28 @@ public class BossProductController {
 
     @GetMapping
     @Operation(summary = "查询BossProduct")
-    public ResponseEntity getBossProducts(BossProductQueryCriteria criteria, Pageable pageable) {
-        return new ResponseEntity<>(bossProductService.queryAll(criteria, pageable), HttpStatus.OK);
+    public Map<String, Object> getBossProducts(BossProductQueryCriteria criteria, Pageable pageable) {
+        return bossProductService.queryAll(criteria, pageable);
     }
 
     @PostMapping
     @Operation(summary = "新增BossProduct")
-    public ResponseEntity create(@Validated @RequestBody BossProductEntity resources) {
-        return new ResponseEntity<>(bossProductService.create(resources), HttpStatus.CREATED);
+    public ResponseEntity<ResultInfo<String>> create(@Validated @RequestBody BossProductEntity resources) {
+        bossProductService.create(resources);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
     @Operation(summary = "修改BossProduct")
-    public ResponseEntity update(@Validated @RequestBody BossProductEntity resources) {
+    public ResponseEntity<ResultInfo<String>> update(@Validated @RequestBody BossProductEntity resources) {
         bossProductService.update(resources);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 会直接忽略body，因为是204 No_Content
     }
 
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "删除BossProduct")
-    public ResponseEntity delete(@PathVariable Long id) {
+    public ResultInfo<String> delete(@PathVariable Long id) {
         bossProductService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResultInfo.success();
     }
 }

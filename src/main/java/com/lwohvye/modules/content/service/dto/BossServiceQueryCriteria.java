@@ -1,6 +1,6 @@
 package com.lwohvye.modules.content.service.dto;
 
-import com.lwohvye.annotation.Query;
+import com.lwohvye.core.annotation.Query;
 import lombok.Data;
 
 /**

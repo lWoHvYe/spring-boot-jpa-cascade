@@ -3,14 +3,15 @@ package com.lwohvye.modules.content.domain;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Set;
  * @date 2020-06-23
  */
 @Entity
-// TODO: 2020/12/2 造成循环依赖的罪魁祸首竟然是hashCode方法，只使用getter和setter就没问题了
+// TODO: 2020/12/2 造成循环依赖的罪魁祸首竟然是hashCode方法，只使用getter和setter就没问题了，但更建议重写ToString移除关联项
 @Getter
 @Setter
 @ToString
@@ -51,15 +52,15 @@ public class BossServiceEntity implements Serializable {
     @OrderBy(value = "sequence ASC , id desc ")
 //    前端实体排序。一般用于后续处理时的顺序
     @OrderColumn(name = "sequence")
-//    sql筛选
-    @Where(clause = " status = 1 ")
+//  筛选 加到sql上，慎用这个，因为这个对所有的select生效，导致及联更新时忽略掉为0的，从而出现问题
+//    @Where(clause = " status = 1 ")
     // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
     // 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
-    private Set<BossProductServiceEntity> bossProductServiceEntities;
+    private List<BossProductServiceEntity> bossProductServiceEntities;
 
     //    需要重写set方法
 //    针对的报错 A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance
-    public void setBossProductServiceEntities(Set<BossProductServiceEntity> bossProductServiceEntities) {
+    public void setBossProductServiceEntities(List<BossProductServiceEntity> bossProductServiceEntities) {
         if (ObjectUtil.isNull(this.bossProductServiceEntities)) {
             this.bossProductServiceEntities = bossProductServiceEntities;
         } else if (ObjectUtil.notEqual(this.bossProductServiceEntities, bossProductServiceEntities)) {// not the same instance, in other case we can get ConcurrentModificationException from hibernate AbstractPersistentCollection

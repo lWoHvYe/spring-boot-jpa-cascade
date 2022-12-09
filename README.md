@@ -8,10 +8,10 @@ Jpa 实际关系注解测试
 ```java
 import org.hibernate.annotations.Where;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.OrderColumn;
 
 @OneToMany
 @JoinColumn
@@ -19,13 +19,14 @@ import javax.persistence.OrderColumn;
 @OrderBy(value = "sequence DESC, id ASC")
 // 前端传的实体会按照此顺序排列，影响jpa级联更新的顺序
 @OrderColumn("sequence DESC")
-// 筛选 加到sql上
+// 筛选 加到sql上，慎用这个，因为这个对所有的select生效，导致及联更新时忽略掉为0的，从而出现问题
 @Where(clause = " status = 1 ")
 // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
 private Set<Role> roles;
-// 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
+// 类型用List时，OrderBy正常。但级联更新有问题(有时又没有问题,模糊了)。对于只读的业务可以用List，否则用Set，因为排序可交由前端
 //private List<Role> roles;
 ```
+
 新增时，可携带关联关系。关联关系中不包含产品相关属性。 保存时，会先add产品id为null的关联记录。再执行update 新增商品示例
 
 ```json5
@@ -39,7 +40,7 @@ private Set<Role> roles;
         "id": 3
       },
       "status": 0,
-      "sequence": 2 
+      "sequence": 2
     },
     {
       "bossServiceEntity": {
@@ -80,7 +81,8 @@ private Set<Role> roles;
 }
 ```
 
-新增关联，只需传包含id为空的即可。 若移除关联关系，只需要在传到后端的数据中删除对应记录即可。 后端会根据与原数据的比对结果进行添加或删除
+新增关联，只需传包含id为空的即可。 若移除关联关系，只需要在传到后端的数据中删除对应记录即可。
+后端会根据与原数据的比对结果进行添加或删除(现在好像变成统一的先清空再删除了，后续碰到再调整)
 
 ```json5
 {
@@ -108,7 +110,9 @@ private Set<Role> roles;
 ```
 
 ####分表后
+
 ###### 产品列表（分库分表） 多个库，多次查询
+
 ````json5
 {
   "content": [
@@ -316,7 +320,9 @@ private Set<Role> roles;
   "totalElements": 7
 }
 ````
+
 ###### 服务包列表（分库）
+
 ````json5
 {
   "content": [

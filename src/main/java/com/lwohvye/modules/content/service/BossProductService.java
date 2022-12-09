@@ -36,7 +36,7 @@ public interface BossProductService {
      */
     BossProductDTO findById(Long id);
 
-    BossProductDTO create(BossProductEntity resources);
+    void create(BossProductEntity resources);
 
     void update(BossProductEntity resources);
 

@@ -6,8 +6,6 @@ import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
 import org.springframework.data.domain.Pageable;
 import java.util.Map;
 import java.util.List;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
 
 /**
 * @author why
@@ -37,7 +35,7 @@ public interface BossServiceService {
      */
     BossServiceDTO findById(Long id);
 
-    BossServiceDTO create(BossServiceEntity resources);
+    void create(BossServiceEntity resources);
 
     void update(BossServiceEntity resources);
 

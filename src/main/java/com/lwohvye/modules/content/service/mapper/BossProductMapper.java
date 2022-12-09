@@ -1,8 +1,8 @@
 package com.lwohvye.modules.content.service.mapper;
 
+import com.lwohvye.core.base.BaseMapper;
 import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.service.dto.BossProductDTO;
-import com.lwohvye.base.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

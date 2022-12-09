@@ -1,0 +1,183 @@
+#配置数据源
+spring:
+  shardingsphere:
+    # 模式配置
+    mode:
+      type: Standalone # 运行模式类型。可选配置：Standalone、Cluster
+      repository:
+        #type: File # 持久化仓库类型, File类型需自行实现好像
+        #props:
+        #<key>= # 持久化仓库所需属性
+        #  path: .shardingsphere
+        type: JDBC
+        # 下面几个都是默认值
+        #props:
+        #  provider: H2
+        #  jdbc_url: jdbc:h2:mem:config;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL
+        #  username: sa
+        #  password:
+      overwrite: false # 是否使用本地配置覆盖持久化配置
+
+    datasource:
+      names: write-ds-1,read-ds-1-0,read-ds-1-1,write-ds-2,read-ds-2-0,read-ds-2-1
+      # 库 1 -----
+      #     主数据源
+      write-ds-1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        url: jdbc:log4jdbc:mysql://${DB_HOST:10.211.55.140}:${DB_PORT:3306}/${DB_NAME:sbjc-m-1}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+        username: ${DB_USER:root}
+        password: ${DB_PWD:root}
+        pool-name: WriteDBP_1
+      #     分数据源
+      read-ds-1-0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        url: jdbc:log4jdbc:mysql://${DB_HOST:10.211.55.140}:${DB_PORT:3306}/${DB_NAME:sbjc-s-1-1}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+        #        从库改用只读账号
+        username: ${DB_USER:reader}
+        password: ${DB_PWD:123456}
+        pool-name: ReadDBP_1_0
+      #     分数据源
+      read-ds-1-1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        url: jdbc:log4jdbc:mysql://${DB_HOST:10.211.55.140}:${DB_PORT:3306}/${DB_NAME:sbjc-s-1-2}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+        #        从库改用只读账号
+        username: ${DB_USER:reader}
+        password: ${DB_PWD:123456}
+        pool-name: ReadDBP_1_1
+      # 库 2 -----
+      #     主数据源
+      write-ds-2:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        url: jdbc:log4jdbc:mysql://${DB_HOST:10.211.55.140}:${DB_PORT:3306}/${DB_NAME:sbjc-m-2}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+        username: ${DB_USER:root}
+        password: ${DB_PWD:root}
+        pool-name: WriteDBP_2
+      #     分数据源
+      read-ds-2-0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        url: jdbc:log4jdbc:mysql://${DB_HOST:10.211.55.140}:${DB_PORT:3306}/${DB_NAME:sbjc-s-2-1}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+        #        从库改用只读账号
+        username: ${DB_USER:reader}
+        password: ${DB_PWD:123456}
+        pool-name: ReadDBP_2_0
+      #     分数据源
+      read-ds-2-1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        url: jdbc:log4jdbc:mysql://${DB_HOST:10.211.55.140}:${DB_PORT:3306}/${DB_NAME:sbjc-s-2-2}?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+        #        从库改用只读账号
+        username: ${DB_USER:reader}
+        password: ${DB_PWD:123456}
+        pool-name: ReadDBP_2_1
+
+    rules:
+      # 详见：https://shardingsphere.apache.org/document/5.0.0/cn/reference/api-change-history/shardingsphere-jdbc/yaml-configuration/#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87-1
+      # 这里指定了规则，读写分离
+      readwrite-splitting:
+        data-sources:
+          # 这个ds不要漏了。
+          # <data-source-name> (+): # 读写分离逻辑数据源名称
+          ds-0:
+            write-data-source-name: write-ds-1 #主库数据源名称
+            read-data-source-names:
+              # - <replica-data_source-name> (+) # 从库数据源名称
+              - read-ds-1-0
+              - read-ds-1-1
+          ds-1:
+            write-data-source-name: write-ds-2 #主库数据源名称
+            read-data-source-names:
+              # - <replica-data_source-name> (+) # 从库数据源名称
+              - read-ds-2-0
+              - read-ds-2-1
+        # 负载均衡算法配置
+        #https://shardingsphere.apache.org/document/current/cn/user-manual/common-config/builtin-algorithm/load-balance/
+        #ROUND_ROBIN：事务内，读请求路由到 primary，事务外，采用轮询策略路由到 replica。所以之前读写分离未生效是因为算法的问题
+        #TRANSACTION_ROUND_ROBIN：显示/非显示开启事务，读请求采用轮询策略路由到多个 replica。
+        load-balancers:
+          # <load-balancer-name> (+): # 负载均衡算法名称
+          round_robin:
+            type: TRANSACTION_ROUND_ROBIN # 负载均衡算法类型
+          #  props: # 负载均衡算法属性配置
+      sharding:
+        default-database-strategy: # 默认数据库分片策略
+          # 分库策略，缺省表示使用默认分库策略，以下的分片策略只能选其一:
+          ##standard: # 用于单分片键的标准分片场景
+          ##complex: # 用于多分片键的复合分片场景
+          ##hint: # Hint 分片策略
+          ##none: # 不分片
+          standard:
+            sharding-column: id
+            sharding-algorithm-name: database-inline
+        # 绑定的表
+        binding-tables:
+          - boss_product
+          - boss_product__service
+          - boss_service
+        ####广播表>>>每个数据库都存在, 且数据都是一样的-----未生效
+        broadcast-tables:
+          - boss_product__servicce
+
+        ##分表
+        tables: # 数据分片规则配置
+          ###### <boss_product表> 分库分表######
+          boss_product: # 逻辑表名称
+            actual-data-nodes: ds-$->{0..1}.boss_product_$->{0..1} # 由数据源名 + 表名组成（参考Inline语法规则）
+            ####根据类型分表
+            table-strategy: # 分表策略
+              standard:
+                sharding-column: type
+                sharding-algorithm-name: bp-inline
+            key-generate-strategy: # 分布式序列策略
+              column: id # 自增列名称，缺省表示不使用自增主键生成器
+              key-generator-name: snowflake # 分布式序列算法名称
+          ###### <boss_service表> 分库不分表######
+          boss_service:
+            actual-data-nodes: ds-$->{0..1}.boss_service
+            key-generate-strategy: # 分布式序列策略
+              column: id # 自增列名称，缺省表示不使用自增主键生成器
+              key-generator-name: snowflake # 分布式序列算法名称
+          ###### <boss_product__service表> 分库不分表######
+          boss_product__service:
+            actual-data-nodes: ds-$->{0..1}.boss_product__service
+            key-generate-strategy: # 分布式序列策略
+              column: id # 自增列名称，缺省表示不使用自增主键生成器
+              key-generator-name: snowflake # 分布式序列算法名称
+
+        sharding-algorithms: # 分片算法配置
+          database-inline: # 分片算法名称
+            type: INLINE # 分片算法类型
+            props: # 分片算法属性配置
+              algorithm-expression: ds-$->{id % 2}
+          bp-inline:
+            type: INLINE
+            props:
+              algorithm-expression: boss_product_$->{type % 2}
+
+        key-generators: # 分布式序列算法配置
+          snowflake: # 分布式序列算法名称
+            type: SNOWFLAKE # 分布式序列算法类型
+            props: # 分布式序列算法属性配置
+              worker-id: 11
+    props:
+      sql:
+        show：true
+
+# 文件存储路径
+file:
+  mac:
+    path: ~/file/
+    avatar: ~/avatar/
+  linux:
+    path: /home/eladmin/file/
+    avatar: /home/eladmin/avatar/
+  windows:
+    path: C:\eladmin\file\
+    avatar: C:\eladmin\avatar\
+  # 文件大小 /M
+#  maxSize: 100
+#  avatarMaxSize: 5

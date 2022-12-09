@@ -1,17 +1,11 @@
 package com.lwohvye.modules.content.domain;
 
-import lombok.Data;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-
-import javax.persistence.*;
-
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.sql.Timestamp;
 
 import java.io.Serializable;
 
