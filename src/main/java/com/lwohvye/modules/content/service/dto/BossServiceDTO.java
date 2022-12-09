@@ -1,40 +1,31 @@
 package com.lwohvye.modules.content.service.dto;
 
-import lombok.Data;
+import com.lwohvye.core.base.BaseEntity;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
+import java.util.Set;
 
 
 /**
  * @author why
  * @date 2020-06-23
  */
-@Data
+@Getter
+@Setter
+@ToString
 public class BossServiceDTO implements Serializable {
 
     // ID
+    @NotNull(groups = BaseEntity.Update.class)
     private Long id;
-
-    // CODE
-    private String code;
 
     // 名称
     private String name;
 
-    // 状态：0-下线，1-上线
-    private Integer status;
-
-    // 描述
-    private String desc;
-
-    // 创建时间
-    private Timestamp createTime;
-
-    // 更新时间
-    private Timestamp updateTime;
-
 //    关联关系
-    private List<BossProductSmallDTO> bossProducts;
+    private Set<BossProductSmallDTO> bossProducts;
 }

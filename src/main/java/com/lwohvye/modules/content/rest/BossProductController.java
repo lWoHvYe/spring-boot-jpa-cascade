@@ -1,26 +1,25 @@
 package com.lwohvye.modules.content.rest;
 
-import com.lwohvye.annotation.AnonymousAccess;
-import com.lwohvye.annotation.Log;
-import com.lwohvye.modules.content.domain.BossProductEntity;
+import com.lwohvye.core.base.BaseEntity;
+import com.lwohvye.core.utils.result.ResultInfo;
 import com.lwohvye.modules.content.service.BossProductService;
+import com.lwohvye.modules.content.service.dto.BossProductDTO;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.Map;
 
 /**
-* @author why
-* @date 2020-06-23
-*/
-@Api(tags = "BossProduct管理")
+ * @author why
+ * @date 2020-06-23
+ */
+@Tag(name = "BossProduct", description = "BossProduct管理")
 @RestController
 @RequestMapping("/api/bossProduct")
 public class BossProductController {
@@ -31,44 +30,30 @@ public class BossProductController {
         this.bossProductService = bossProductService;
     }
 
-    @Log("导出数据")
-    @ApiOperation("导出数据")
-    @GetMapping(value = "/download")
-    public void download(HttpServletResponse response, BossProductQueryCriteria criteria) throws IOException {
-        bossProductService.download(bossProductService.queryAll(criteria), response);
-    }
-
     @GetMapping
-    @Log("查询BossProduct")
-    @ApiOperation("查询BossProduct")
-    @AnonymousAccess
-    public ResponseEntity getBossProducts(BossProductQueryCriteria criteria, Pageable pageable){
-        return new ResponseEntity<>(bossProductService.queryAll(criteria,pageable),HttpStatus.OK);
+    @Operation(summary = "查询BossProduct")
+    public Map<String, Object> getBossProducts(BossProductQueryCriteria criteria, Pageable pageable) {
+        return bossProductService.queryAll(criteria, pageable);
     }
 
     @PostMapping
-    @Log("新增BossProduct")
-    @ApiOperation("新增BossProduct")
-    @AnonymousAccess
-    public ResponseEntity create(@Validated @RequestBody BossProductEntity resources){
-        return new ResponseEntity<>(bossProductService.create(resources),HttpStatus.CREATED);
+    @Operation(summary = "新增BossProduct")
+    public ResponseEntity<ResultInfo<String>> create(@Validated @RequestBody BossProductDTO resources) {
+        bossProductService.create(resources);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
-    @Log("修改BossProduct")
-    @ApiOperation("修改BossProduct")
-    @AnonymousAccess
-    public ResponseEntity update(@Validated @RequestBody BossProductEntity resources){
+    @Operation(summary = "修改BossProduct")
+    public ResponseEntity<ResultInfo<String>> update(@Validated(BaseEntity.Update.class) @RequestBody BossProductDTO resources) {
         bossProductService.update(resources);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 会直接忽略body，因为是204 No_Content
     }
 
     @DeleteMapping(value = "/{id}")
-    @Log("删除BossProduct")
-    @ApiOperation("删除BossProduct")
-    @AnonymousAccess
-    public ResponseEntity delete(@PathVariable Long id){
+    @Operation(summary = "删除BossProduct")
+    public ResultInfo<String> delete(@PathVariable Long id) {
         bossProductService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResultInfo.success();
     }
 }

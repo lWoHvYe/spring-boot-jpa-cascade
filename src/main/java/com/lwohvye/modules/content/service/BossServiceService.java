@@ -1,13 +1,10 @@
 package com.lwohvye.modules.content.service;
 
-import com.lwohvye.modules.content.domain.BossServiceEntity;
 import com.lwohvye.modules.content.service.dto.BossServiceDTO;
 import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
 import org.springframework.data.domain.Pageable;
 import java.util.Map;
 import java.util.List;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
 
 /**
 * @author why
@@ -37,11 +34,10 @@ public interface BossServiceService {
      */
     BossServiceDTO findById(Long id);
 
-    BossServiceDTO create(BossServiceEntity resources);
+    void create(BossServiceDTO resources);
 
-    void update(BossServiceEntity resources);
+    void update(BossServiceDTO resources);
 
     void delete(Long id);
 
-    void download(List<BossServiceDTO> all, HttpServletResponse response) throws IOException;
 }

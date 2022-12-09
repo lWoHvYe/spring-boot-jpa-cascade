@@ -2,25 +2,20 @@ package com.lwohvye.modules.content.domain;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 /**
  * @author why
  * @date 2020-06-23
  */
 @Entity
-// TODO: 2020/12/2 造成循环依赖的罪魁祸首竟然是toString方法，只使用getter和setter就没问题了
 @Getter
 @Setter
 @ToString
@@ -34,10 +29,6 @@ public class BossProductEntity implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    // CODE
-    @Column(name = "code")
-    private String code = "bossProduct_" + UUID.randomUUID();
-
     // 名称
     @Column(name = "name")
     private String name;
@@ -46,82 +37,14 @@ public class BossProductEntity implements Serializable {
     @Column(name = "type")
     private Integer type;
 
-    // 价格，单位：分
-    @Column(name = "price")
-    private Integer price;
-
-    // 原始价格
-    @Column(name = "original_price")
-    private Integer originalPrice;
-
-    // 积分
-    @Column(name = "points")
-    private Integer points;
-
-    // 原始积分
-    @Column(name = "original_points")
-    private Integer originalPoints;
-
-    // 计费类型：0-FREE（免费），1-PPV（一次性收费），2-SVOD（周期性收费）
-    @Column(name = "fee_type")
-    private Integer feeType;
-
-    // 计费单位：1-小时 2-天 3-周 4-月 5-季 6-年
-    @Column(name = "fee_unit")
-    private Integer feeUnit;
-
-    //    计费时长（>0）：-1-永久 其他-具体值
-    @Column(name = "fee_duration")
-    private Integer feeDuration;
-
-    //    计费生效规则：1-订购立即生效 2-下一自然周期生效
-    @Column(name = "fee_effective")
-    private Integer feeEffective;
-
-    // 计费失效规则：1-退订立即失效 2-服务期满自动失效 3-退订自然周期满失效
-    @Column(name = "fee_invalid")
-    private Integer feeInvalid;
-
-    // 开始时间
-    @Column(name = "start_time")
-    private Timestamp startTime;
-
-    // 过期时间
-    @Column(name = "expire_time")
-    private Timestamp expireTime;
-
-    // 状态：0-下线，1-上线
-    @Column(name = "status")
-    private Integer status;
-
-    // 图片
-    @Column(name = "img")
-    private String img;
-
-    // 描述
-    @Column(name = "`desc`")
-    private String desc;
-
-    // 创建时间
-    @CreatedDate
-    @Column(name = "create_time")
-    private Timestamp createTime;
-
-    // 更新时间
-    @LastModifiedDate
-    @Column(name = "update_time")
-    private Timestamp updateTime;
-
-    @Column(name = "out_product_id")
-    private String outProductId;
-
-    // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题
-    // TODO: cascade = CascadeType.ALL 在保持时会出问题，可能需要移除掉，待确认
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题，在一侧重写toString排除掉关联属性
+    // cascade = CascadeType.ALL 在新增时不能包含关联关系，更新时可包含关联关系且可对其进行更新，删除时会自动删除另一方（所以不能使用CascadeType.REMOVE）
+    // 推荐用下面的MERGE，可考虑REFRESH
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(name = "boss_product__service",
             joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "service_id", referencedColumnName = "id")})
-    private List<BossServiceEntity> bossServices;
+    private Set<BossServiceEntity> bossServices;
 
     public void copy(BossProductEntity source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));

@@ -1,6 +1,6 @@
 package com.lwohvye.modules.content.service.dto;
 
-import com.lwohvye.annotation.Query;
+import com.lwohvye.core.annotation.Query;
 import lombok.Data;
 
 /**
@@ -14,15 +14,7 @@ public class BossServiceQueryCriteria{
     @Query
     private Long id;
 
-    // 精确
-    @Query
-    private String code;
-
     // 模糊
     @Query(type = Query.Type.INNER_LIKE)
     private String name;
-
-    // 精确
-    @Query
-    private Integer status;
 }

@@ -2,12 +2,10 @@ package com.lwohvye.modules.content.service;
 
 import com.lwohvye.modules.content.service.dto.BossProductDTO;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
-import com.lwohvye.modules.content.domain.BossProductEntity;
 import org.springframework.data.domain.Pageable;
-import java.util.Map;
+
 import java.util.List;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
 * @author why
@@ -37,11 +35,9 @@ public interface BossProductService {
      */
     BossProductDTO findById(Long id);
 
-    BossProductDTO create(BossProductEntity resources);
+    void create(BossProductDTO resources);
 
-    void update(BossProductEntity resources);
+    void update(BossProductDTO resources);
 
     void delete(Long id);
-
-    void download(List<BossProductDTO> all, HttpServletResponse response) throws IOException;
 }
