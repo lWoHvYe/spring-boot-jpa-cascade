@@ -1,7 +1,7 @@
 package com.lwohvye.modules.content.service.impl;
 
-import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
+import com.lwohvye.core.context.CycleAvoidingMappingContext;
 import com.lwohvye.core.utils.PageUtils;
 import com.lwohvye.core.utils.QueryHelp;
 import com.lwohvye.core.utils.ValidationUtils;
@@ -10,9 +10,9 @@ import com.lwohvye.modules.content.repository.BossServiceRepository;
 import com.lwohvye.modules.content.service.BossServiceService;
 import com.lwohvye.modules.content.service.dto.BossServiceDTO;
 import com.lwohvye.modules.content.service.dto.BossServiceQueryCriteria;
+import com.lwohvye.modules.content.service.mapstruct.BossServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,10 +35,13 @@ public class BossServiceServiceImpl implements BossServiceService {
     @Autowired
     private ConversionService conversionService;
 
+    @Autowired
+    private BossServiceMapper bossServiceMapper;
+
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Map<String, Object> queryAll(BossServiceQueryCriteria criteria, Pageable pageable) {
-        Page<BossServiceEntity> page = bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
+        var page = bossServiceRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtils.toPage(page.map(bossProductEntity -> conversionService.convert(bossProductEntity, BossServiceDTO.class)));
     }
 
@@ -51,17 +54,18 @@ public class BossServiceServiceImpl implements BossServiceService {
 
     @Override
     public BossServiceDTO findById(Long id) {
-        BossServiceEntity bossService = bossServiceRepository.findById(id).orElseGet(BossServiceEntity::new);
+        var bossService = bossServiceRepository.findById(id).orElseGet(BossServiceEntity::new);
         ValidationUtils.isNull(bossService.getId(), "BossService", "id", id);
         return conversionService.convert(bossService, BossServiceDTO.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(BossServiceEntity resources) {
-        Snowflake snowflake = IdUtil.getSnowflake(1, 1);
-        resources.setId(snowflake.nextId());
-        bossServiceRepository.save(resources);
+    public void create(BossServiceDTO resources) {
+        var snowflake = IdUtil.getSnowflake(1, 1);
+        var bossServiceEntity = bossServiceMapper.toEntity(resources, new CycleAvoidingMappingContext());
+        bossServiceEntity.setId(snowflake.nextId());
+        bossServiceRepository.save(bossServiceEntity);
         /* 4.1.1版本可以这样强制使用主库，5.x改了配置方式，有时间再看一下
         通过使用 Sharding-JDBC 的 HintManager 分片键值管理器，可以强制使用主库。
         HintManager hintManager = HintManager.getInstance();
@@ -71,10 +75,11 @@ public class BossServiceServiceImpl implements BossServiceService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(BossServiceEntity resources) {
-        BossServiceEntity bossService = bossServiceRepository.findById(resources.getId()).orElseGet(BossServiceEntity::new);
+    public void update(BossServiceDTO resources) {
+        var bossService = bossServiceRepository.findById(resources.getId()).orElseGet(BossServiceEntity::new);
         ValidationUtils.isNull(bossService.getId(), "BossService", "id", resources.getId());
-        bossService.copy(resources);
+        var bossServiceEntity = bossServiceMapper.toEntity(resources, new CycleAvoidingMappingContext());
+        bossService.copy(bossServiceEntity);
         bossServiceRepository.save(bossService);
     }
 

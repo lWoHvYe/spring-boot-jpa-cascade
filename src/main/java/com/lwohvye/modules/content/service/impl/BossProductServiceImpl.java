@@ -1,7 +1,7 @@
 package com.lwohvye.modules.content.service.impl;
 
-import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
+import com.lwohvye.core.context.CycleAvoidingMappingContext;
 import com.lwohvye.core.utils.PageUtils;
 import com.lwohvye.core.utils.QueryHelp;
 import com.lwohvye.core.utils.ValidationUtils;
@@ -10,9 +10,9 @@ import com.lwohvye.modules.content.repository.BossProductRepository;
 import com.lwohvye.modules.content.service.BossProductService;
 import com.lwohvye.modules.content.service.dto.BossProductDTO;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
+import com.lwohvye.modules.content.service.mapstruct.BossProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,10 +35,13 @@ public class BossProductServiceImpl implements BossProductService {
     @Autowired
     private ConversionService conversionService;
 
+    @Autowired
+    private BossProductMapper bossProductMapper;
+
     @Override
     @Transactional(rollbackFor = Exception.class, readOnly = true)
     public Map<String, Object> queryAll(BossProductQueryCriteria criteria, Pageable pageable) {
-        Page<BossProductEntity> page = bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
+        var page = bossProductRepository.findAll((root, criteriaQuery, criteriaBuilder) -> QueryHelp.getPredicate(root, criteria, criteriaBuilder), pageable);
         return PageUtils.toPage(page.map(bossProductEntity -> conversionService.convert(bossProductEntity, BossProductDTO.class)));
     }
 
@@ -51,25 +54,27 @@ public class BossProductServiceImpl implements BossProductService {
 
     @Override
     public BossProductDTO findById(Long id) {
-        BossProductEntity bossProduct = bossProductRepository.findById(id).orElseGet(BossProductEntity::new);
+        var bossProduct = bossProductRepository.findById(id).orElseGet(BossProductEntity::new);
         ValidationUtils.isNull(bossProduct.getId(), "BossProduct", "id", id);
         return conversionService.convert(bossProduct, BossProductDTO.class);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(BossProductEntity resources) {
-        Snowflake snowflake = IdUtil.getSnowflake(1, 1);
-        resources.setId(snowflake.nextId());
-        bossProductRepository.save(resources);
+    public void create(BossProductDTO resources) {
+        var bossProductEntity = bossProductMapper.toEntity(resources, new CycleAvoidingMappingContext());
+        var snowflake = IdUtil.getSnowflake(1, 1);
+        bossProductEntity.setId(snowflake.nextId());
+        bossProductRepository.save(bossProductEntity);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(BossProductEntity resources) {
-        BossProductEntity bossProduct = bossProductRepository.findById(resources.getId()).orElseGet(BossProductEntity::new);
+    public void update(BossProductDTO resources) {
+        var bossProduct = bossProductRepository.findById(resources.getId()).orElseGet(BossProductEntity::new);
         ValidationUtils.isNull(bossProduct.getId(), "BossProduct", "id", resources.getId());
-        bossProduct.copy(resources);
+        var bossProductEntity = bossProductMapper.toEntity(resources, new CycleAvoidingMappingContext());
+        bossProduct.copy(bossProductEntity);
         bossProductRepository.save(bossProduct);
     }
 

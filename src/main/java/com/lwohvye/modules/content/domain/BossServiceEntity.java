@@ -6,13 +6,10 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author why
@@ -22,7 +19,6 @@ import java.util.Set;
 // TODO: 2020/12/2 造成循环依赖的罪魁祸首竟然是hashCode方法，只使用getter和setter就没问题了，但更建议重写ToString移除关联项
 @Getter
 @Setter
-@ToString
 @EntityListeners(AuditingEntityListener.class)
 //@NamedEntityGraph(name = "service-details", attributeNodes = {@NamedAttributeNode("bossProductServiceEntities")})
 @Table(name = "boss_service")
@@ -73,5 +69,13 @@ public class BossServiceEntity implements Serializable {
 
     public void copy(BossServiceEntity source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
+    }
+
+    @Override
+    public String toString() {
+        return "BossServiceEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

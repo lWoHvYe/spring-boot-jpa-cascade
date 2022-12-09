@@ -1,8 +1,9 @@
 package com.lwohvye.modules.content.rest;
 
+import com.lwohvye.core.base.BaseEntity;
 import com.lwohvye.core.utils.result.ResultInfo;
-import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.service.BossProductService;
+import com.lwohvye.modules.content.service.dto.BossProductDTO;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,14 +38,14 @@ public class BossProductController {
 
     @PostMapping
     @Operation(summary = "新增BossProduct")
-    public ResponseEntity<ResultInfo<String>> create(@Validated @RequestBody BossProductEntity resources) {
+    public ResponseEntity<ResultInfo<String>> create(@Validated @RequestBody BossProductDTO resources) {
         bossProductService.create(resources);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
     @Operation(summary = "修改BossProduct")
-    public ResponseEntity<ResultInfo<String>> update(@Validated @RequestBody BossProductEntity resources) {
+    public ResponseEntity<ResultInfo<String>> update(@Validated(BaseEntity.Update.class) @RequestBody BossProductDTO resources) {
         bossProductService.update(resources);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 会直接忽略body，因为是204 No_Content
     }

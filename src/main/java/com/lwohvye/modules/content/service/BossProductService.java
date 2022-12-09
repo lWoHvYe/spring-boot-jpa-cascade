@@ -1,6 +1,5 @@
 package com.lwohvye.modules.content.service;
 
-import com.lwohvye.modules.content.domain.BossProductEntity;
 import com.lwohvye.modules.content.service.dto.BossProductDTO;
 import com.lwohvye.modules.content.service.dto.BossProductQueryCriteria;
 import org.springframework.data.domain.Pageable;
@@ -36,9 +35,9 @@ public interface BossProductService {
      */
     BossProductDTO findById(Long id);
 
-    void create(BossProductEntity resources);
+    void create(BossProductDTO resources);
 
-    void update(BossProductEntity resources);
+    void update(BossProductDTO resources);
 
     void delete(Long id);
 }

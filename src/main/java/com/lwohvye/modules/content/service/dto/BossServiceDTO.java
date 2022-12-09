@@ -1,5 +1,7 @@
 package com.lwohvye.modules.content.service.dto;
 
+import com.lwohvye.core.base.BaseEntity;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +20,7 @@ import java.util.Set;
 public class BossServiceDTO implements Serializable {
 
     // ID
+    @NotNull(groups = BaseEntity.Update.class)
     private Long id;
 
     // 名称

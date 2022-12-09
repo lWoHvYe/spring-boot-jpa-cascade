@@ -6,23 +6,20 @@ import cn.hutool.core.util.ObjectUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author why
  * @date 2020-06-23
  */
 @Entity
+//@Accessors(chain = true) toEntity 中set系列方法对方法返回值都有要求，要为void
 // TODO: 2020/12/2 造成循环依赖的罪魁祸首竟然是hashCode方法，只使用getter和setter就没问题了
 @Getter
 @Setter
-@ToString
 @EntityListeners(AuditingEntityListener.class)
 //@NamedEntityGraph(name = "product-details", attributeNodes = {@NamedAttributeNode("bossProductServiceEntities")})
 @Table(name = "boss_product")
@@ -58,11 +55,11 @@ public class BossProductEntity implements Serializable {
     @OrderBy(value = "sequence ASC , id desc ")
 //    前端实体排序。一般用于后续处理时的顺序
     @OrderColumn(name = "sequence")
-//  筛选 加到sql上，慎用这个，因为这个对所有的select生效，导致及联更新时忽略掉为0的，从而出现问题
+//  筛选 加到sql上，慎用这个，因为这个对所有的select生效，导致及联更新时忽略掉为0的，从而导致为0的出现重复，除非业务不关注为0的
 //    @Where(clause = " status = 1 ")
     // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
 //    使用Set存取顺序不一致是因为使用的实现是HashSet，
-    // 类型用List时，OrderBy正常。但级联更新有问题（有时又没有问题，模糊了）。对于只读的业务可以用List，否则用Set，因为排序可交由前端
+    // 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
     private List<BossProductServiceEntity> bossProductServiceEntities;
 
 //    @JoinColumn(name = "product_code")
@@ -84,5 +81,14 @@ public class BossProductEntity implements Serializable {
 
     public void copy(BossProductEntity source) {
         BeanUtil.copyProperties(source, this, CopyOptions.create().setIgnoreNullValue(true));
+    }
+
+    @Override
+    public String toString() {
+        return "BossProductEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

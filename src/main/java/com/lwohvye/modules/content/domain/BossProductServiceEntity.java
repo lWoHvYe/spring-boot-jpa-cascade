@@ -13,8 +13,8 @@ import java.io.Serializable;
  * @author why
  * @date 2020-06-23
  */
-@Accessors(chain = true)
 @Entity
+@Accessors(chain = true)
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "boss_product__service")

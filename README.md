@@ -19,28 +19,28 @@ import jakarta.persistence.OrderColumn;
 @OrderBy(value = "sequence DESC, id ASC")
 // 前端传的实体会按照此顺序排列，影响jpa级联更新的顺序
 @OrderColumn("sequence DESC")
-// 筛选 加到sql上，慎用这个，因为这个对所有的select生效，导致及联更新时忽略掉为0的，从而出现问题
+// 筛选 加到sql上，慎用这个，因为这个对所有的select生效，导致及联更新时忽略掉为0的，从而出现问题(!=this.condition的会重复)，但如果业务中只关注 = condition 的，也能用这个
 @Where(clause = " status = 1 ")
 // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
 private Set<Role> roles;
-// 类型用List时，OrderBy正常。但级联更新有问题(有时又没有问题,模糊了)。对于只读的业务可以用List，否则用Set，因为排序可交由前端
+// 类型用List时，OrderBy正常。但级联更新有问题(忘了啥问题了)。对于只读的业务可以用List，否则用Set，因为排序可交由前端
 //private List<Role> roles;
 ```
 
-新增时，可携带关联关系。关联关系中不包含产品相关属性。 保存时，会先add产品id为null的关联记录。再执行update 新增商品示例
+新增时/即Create，可携带关联关系。关联关系中不包含产品相关属性。 保存时，会先add产品id为null的关联记录。再执行update 新增商品示例
 
 ```json5
 
 {
-  "name": "包月",
+  "name": "包月-银卡VIP",
   "type": 2,
   "bossProductServiceEntities": [
     {
       "bossServiceEntity": {
         "id": 3
       },
-      "status": 0,
-      "sequence": 2
+      "status": 1,
+      "sequence": 3
     },
     {
       "bossServiceEntity": {
@@ -81,29 +81,56 @@ private Set<Role> roles;
 }
 ```
 
-新增关联，只需传包含id为空的即可。 若移除关联关系，只需要在传到后端的数据中删除对应记录即可。
-后端会根据与原数据的比对结果进行添加或删除(现在好像变成统一的先清空再删除了，后续碰到再调整)
+新增关联时/即Update，有两种方式
+- 将关联表记录的id置空，这样会先清空原关联记录，然后新增，这种最简单，且针对需要update或不变的关联记录，不需要传bossProductEntity.id（毕竟是全清空重建）
+```json5
+{
+  "id": 1,
+  "name": "包月-银卡VIP",
+  "type": 2,
+  "bossProductServiceEntities": [
+    {
+      "bossServiceEntity": {
+        "id": 3
+      },
+      "status": 1,
+      "sequence": 3
+    },
+    {
+      "bossServiceEntity": {
+        "id": 5
+      },
+      "status": 1,
+      "sequence": 5
+    }
+  ]
+}
+```
+- 有关联表记录id的传其id，则该记录需包含所有必须的项，包括bossProductEntity.id，这个会比对并根据需要update/delete，针对无关联记录id的create
 
 ```json5
 {
   "id": 1,
-  "name": "包月",
+  "name": "包月-银卡VIP",
   "type": 2,
   "bossProductServiceEntities": [
     {
-      "id": 9,
+      "id": 10,
+      "bossProductEntity": {
+        "id": 1,
+      },
+      "bossServiceEntity": {
+        "id": 3
+      },
+      "status": 1,
+      "sequence": 3
+    },
+    {
       "bossServiceEntity": {
         "id": 4
       },
       "status": 0,
       "sequence": 1
-    },
-    {
-      "bossServiceEntity": {
-        "id": 2
-      },
-      "status": 1,
-      "sequence": 2
     }
   ]
 }
