@@ -23,7 +23,7 @@ import jakarta.persistence.OrderColumn;
 @Where(clause = " status = 1 ")
 // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
 private Set<Role> roles;
-// 类型用List时，OrderBy正常。但级联更新有问题(忘了啥问题了)。对于只读的业务可以用List，否则用Set，因为排序可交由前端
+// 类型用List时，OrderBy正常。但返回的数据中有null，且及联更新也有些问题。建议用Set
 //private List<Role> roles;
 ```
 
@@ -43,34 +43,6 @@ private Set<Role> roles;
       "sequence": 3
     },
     {
-      "bossServiceEntity": {
-        "id": 4
-      },
-      "status": 0,
-      "sequence": 1
-    }
-  ]
-}
-```
-
-保存json示例（与下面调整类似） 直接修改bossProductServiceEntities中值， 执行update后生效
-
-```json5
-{
-  "id": 1,
-  "name": "包月",
-  "type": 2,
-  "bossProductServiceEntities": [
-    {
-      "id": 10,
-      "bossServiceEntity": {
-        "id": 3
-      },
-      "status": 0,
-      "sequence": 2
-    },
-    {
-      "id": 9,
       "bossServiceEntity": {
         "id": 4
       },
@@ -106,7 +78,8 @@ private Set<Role> roles;
   ]
 }
 ```
-- 有关联表记录id的传其id，则该记录需包含所有必须的项，包括bossProductEntity.id，这个会比对并根据需要update/delete，针对无关联记录id的create
+- 当使用List承载关联记录时，有关联表记录id的传其id，则该记录需包含所有必须的项，包括bossProductEntity.id，这个会比对并根据需要update/delete，针对无关联记录id的create
+- 当使用Set承载关联记录时，可略去bossProductEntity.id，综合考虑，不建议使用List，而应使用Set
 
 ```json5
 {

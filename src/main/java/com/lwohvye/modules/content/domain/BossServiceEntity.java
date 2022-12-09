@@ -9,7 +9,7 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author why
@@ -51,12 +51,12 @@ public class BossServiceEntity implements Serializable {
 //  筛选 加到sql上，慎用这个，因为这个对所有的select生效，导致及联更新时忽略掉为0的，从而出现问题
 //    @Where(clause = " status = 1 ")
     // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
-    // 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
-    private List<BossProductServiceEntity> bossProductServiceEntities;
+    // 类型用List时，OrderBy正常。但返回的数据中有null。建议用Set
+    private Set<BossProductServiceEntity> bossProductServiceEntities;
 
     //    需要重写set方法
 //    针对的报错 A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance
-    public void setBossProductServiceEntities(List<BossProductServiceEntity> bossProductServiceEntities) {
+    public void setBossProductServiceEntities(Set<BossProductServiceEntity> bossProductServiceEntities) {
         if (ObjectUtil.isNull(this.bossProductServiceEntities)) {
             this.bossProductServiceEntities = bossProductServiceEntities;
         } else if (ObjectUtil.notEqual(this.bossProductServiceEntities, bossProductServiceEntities)) {// not the same instance, in other case we can get ConcurrentModificationException from hibernate AbstractPersistentCollection

@@ -9,7 +9,7 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author why
@@ -59,8 +59,8 @@ public class BossProductEntity implements Serializable {
 //    @Where(clause = " status = 1 ")
     // 注意类型用Set会重新排序。导入OrderBy无效。但级联更新正常
 //    使用Set存取顺序不一致是因为使用的实现是HashSet，
-    // 类型用List时，OrderBy正常。但级联更新有问题。对于只读的业务可以用List，否则用Set，因为排序可交由前端
-    private List<BossProductServiceEntity> bossProductServiceEntities;
+    // 类型用List时，OrderBy正常。但返回的数据中有null。建议用Set
+    private Set<BossProductServiceEntity> bossProductServiceEntities;
 
 //    @JoinColumn(name = "product_code")
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -68,7 +68,7 @@ public class BossProductEntity implements Serializable {
 
     //    需要重写set方法
 //    针对的报错 A collection with cascade="all-delete-orphan" was no longer referenced by the owning entity instance
-    public void setBossProductServiceEntities(List<BossProductServiceEntity> bossProductServiceEntities) {
+    public void setBossProductServiceEntities(Set<BossProductServiceEntity> bossProductServiceEntities) {
         if (ObjectUtil.isNull(this.bossProductServiceEntities)) {
             this.bossProductServiceEntities = bossProductServiceEntities;
         } else if (ObjectUtil.notEqual(this.bossProductServiceEntities, bossProductServiceEntities)) {// not the same instance, in other case we can get ConcurrentModificationException from hibernate AbstractPersistentCollection
