@@ -324,6 +324,15 @@ spring:
               # - <replica-data_source-name> (+) # 从库数据源名称
               - read-ds-2-0
               - read-ds-2-1
+        # 负载均衡算法配置
+        #https://shardingsphere.apache.org/document/current/cn/user-manual/common-config/builtin-algorithm/load-balance/
+        #ROUND_ROBIN：事务内，读请求路由到 primary，事务外，采用轮询策略路由到 replica。所以之前读写分离未生效是因为算法的问题
+        #TRANSACTION_ROUND_ROBIN：显示/非显示开启事务，读请求采用轮询策略路由到多个 replica。
+        load-balancers:
+          # <load-balancer-name> (+): # 负载均衡算法名称
+          round_robin:
+            type: TRANSACTION_ROUND_ROBIN # 负载均衡算法类型
+          #  props: # 负载均衡算法属性配置
       sharding:
         default-database-strategy: # 默认数据库分片策略
            # 分库策略，缺省表示使用默认分库策略，以下的分片策略只能选其一:
