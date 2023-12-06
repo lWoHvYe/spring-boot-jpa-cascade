@@ -26,5 +26,7 @@ public class BossServiceDTO implements Serializable {
     // 名称
     private String name;
 
+    //    关联关系
+//    private Set<BossProductSmallDTO> bossProducts;
     private Set<BossProductServiceDTO> bossProductServiceEntities;
 }

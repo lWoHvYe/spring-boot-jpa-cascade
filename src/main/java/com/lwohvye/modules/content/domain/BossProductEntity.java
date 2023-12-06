@@ -3,6 +3,7 @@ package com.lwohvye.modules.content.domain;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.ObjectUtil;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,11 +40,15 @@ public class BossProductEntity implements Serializable {
     private Integer type;
 
     // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题。但只适用单方维护关系的场景。且不能都用@JoinTable，被维护方使用@ManyToMany(mappedBy = "多方关联属性名")
-//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JoinTable(name = "boss_product__service",
-//            joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
-//            inverseJoinColumns = {@JoinColumn(name = "service_id", referencedColumnName = "id")})
-//    private List<BossServiceEntity> bossServices;
+    // TODO: 2020/12/2 针对ManyToMany做调整亦可解决循环依赖问题，在一侧重写toString排除掉关联属性
+    // cascade = CascadeType.ALL 在新增时不能包含关联关系，更新时可包含关联关系且可对其进行更新，删除时会自动删除另一方（所以不能使用CascadeType.REMOVE）
+    // 推荐用下面的MERGE，可考虑REFRESH
+    @JsonManagedReference
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinTable(name = "boss_product__service",
+            joinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "service_id", referencedColumnName = "id")})
+    private Set<BossServiceEntity> bossServices;
 
     // TODO: 2020/12/2 需要级联查询与更新。使用下面这种方式
 //    @Lazy注解注解的作用主要是减少springIOC容器启动的加载时间

@@ -31,6 +31,7 @@ public class BossProductServiceEntity implements Serializable {
     // TODO: 2021/1/9   这种配置方式是否可行待验证
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
+    //@JoinFormula("upper(substring(middle_name from 0 for 1))") call native SQL functions，可替代@JoinColumn
     private BossProductEntity bossProductEntity;
 
 //    referencedColumnName 指定另一实体关联的字段，默认是主键，如果不是需要进行指定，比如下面这个，指定通过非主键的code进行关联
@@ -48,6 +49,7 @@ public class BossProductServiceEntity implements Serializable {
 
     // 状态：0-下线，1-上线
     @Column(name = "status")
+    //@ColumnTransformer(read="decrypt(credit_card_num)", write="encrypt(?)") 对于需要write的，还有@ColumnTransformer可以使用
     private Integer status;
 
     //    顺序

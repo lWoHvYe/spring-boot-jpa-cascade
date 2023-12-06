@@ -29,5 +29,7 @@ public class BossProductDTO implements Serializable {
     // 类型，1-基础包产品 2-增值包产品 3-套餐产品
     private Integer type;
 
+    //    关联关系
+//    private Set<BossServiceSmallDTO> bossServices;
     private Set<BossProductServiceDTO> bossProductServiceEntities;
 }
